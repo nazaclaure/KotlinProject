@@ -6,4 +6,16 @@ plugins {
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.kotlinSerialization) apply false
+    alias(libs.plugins.detekt) apply false
+}
+
+allprojects {
+    configurations.all {
+        resolutionStrategy.eachDependency {
+            if (requested.group == "org.jetbrains.androidx.navigation" || requested.group == "androidx.navigation") {
+                useVersion("2.9.2")
+            }
+        }
+    }
 }
