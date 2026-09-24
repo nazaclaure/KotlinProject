@@ -102,7 +102,7 @@ fun ProfileScreen(
                         onClick = { viewModel.onEvent(ProfileEvents.OnLogout) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cerrar SesiÃ³n")
+                        Text("Cerrar Sesión")
                     }
                 }
             }

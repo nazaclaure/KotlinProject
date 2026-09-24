@@ -71,14 +71,14 @@ fun SignUpScreen(
         OutlinedTextField(
             value = state.email,
             onValueChange = { viewModel.onEvent(SignUpEvents.OnEmailChanged(it)) },
-            label = { Text("Correo ElectrÃ³nico") },
+            label = { Text("Correo Electrónico") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
             value = state.pass,
             onValueChange = { viewModel.onEvent(SignUpEvents.OnPasswordChanged(it)) },
-            label = { Text("ContraseÃ±a") },
+            label = { Text("Contraseña") },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
