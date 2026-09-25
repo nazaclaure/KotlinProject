@@ -1,0 +1,15 @@
+naming:
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+
+style:
+  MagicNumber:
+    active: false
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+
+complexity:
+  LongMethod:
+    threshold: 120

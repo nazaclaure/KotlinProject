@@ -84,4 +84,10 @@ dependencies {
 detekt {
     buildUponDefaultConfig = true
     allRules = false
+    config.setFrom("$projectDir/../config/detekt/detekt.yml")
+    source.setFrom(
+        "src/commonMain/kotlin",
+        "src/androidMain/kotlin",
+        "src/iosMain/kotlin"
+    )
 }

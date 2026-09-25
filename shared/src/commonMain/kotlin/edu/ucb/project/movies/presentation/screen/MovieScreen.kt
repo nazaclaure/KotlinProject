@@ -87,7 +87,12 @@ fun MovieScreen(
                                     .clickable {
                                         viewModel.onEvent(MovieEvents.OnMovieClicked(movie.id))
                                     },
-                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+
+
+
+                                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                )
                             ) {
                                 Text(
                                     text = movie.title,
