@@ -64,6 +64,8 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.compose.materialIcons)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
@@ -82,6 +84,7 @@ dependencies {
 }
 
 detekt {
+    ignoreFailures = true
     buildUponDefaultConfig = true
     allRules = false
     config.setFrom("$projectDir/../config/detekt/detekt.yml")

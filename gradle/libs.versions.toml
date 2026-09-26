@@ -17,6 +17,7 @@ koinBom = "4.2.2"
 navigationCompose = "2.9.2"
 kotlinxSerializationJson = "1.8.0"
 composeMaterialIcons = "1.7.3"
+coil = "3.5.0"
 detekt = "1.23.8"
 ktor = "3.4.1"
 
@@ -46,6 +47,8 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinBom" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 compose-materialIcons = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "composeMaterialIcons" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }

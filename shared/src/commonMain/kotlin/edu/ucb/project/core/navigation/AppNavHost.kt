@@ -11,6 +11,7 @@ import edu.ucb.project.movies.presentation.screen.MovieScreen
 import edu.ucb.project.moviedetail.presentation.screen.MovieDetailScreen
 import edu.ucb.project.profile.presentation.screen.ProfileScreen
 import edu.ucb.project.userinformation.presentation.screen.UserInformationScreen
+import edu.ucb.project.catalog.presentation.screen.CatalogScreen
 
 @Composable
 fun AppNavHost() {
@@ -35,6 +36,9 @@ fun AppNavHost() {
         }
         composable<NavRoute.UserInformation> {
             UserInformationScreen(navController = navController)
+        }
+        composable<NavRoute.Catalog> {
+            CatalogScreen(navController = navController)
         }
     }
 }

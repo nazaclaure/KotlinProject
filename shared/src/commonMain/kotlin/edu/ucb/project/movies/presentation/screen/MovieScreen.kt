@@ -60,6 +60,9 @@ fun MovieScreen(
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
+            TextButton(onClick = { navController.navigate(NavRoute.Catalog) }) {
+                Text("Ver Catalogo")
+            }
             TextButton(onClick = { navController.navigate(NavRoute.Profile) }) {
                 Text("Mi Perfil")
             }

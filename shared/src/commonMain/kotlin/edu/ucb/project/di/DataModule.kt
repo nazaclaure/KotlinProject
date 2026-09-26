@@ -14,9 +14,15 @@ import edu.ucb.project.userinformation.data.datasource.GithubRemoteDataSource
 import edu.ucb.project.userinformation.data.repository.GithubRepositoryImpl
 import edu.ucb.project.userinformation.data.service.GitHubApiService
 import edu.ucb.project.userinformation.domain.repository.GithubRepository
+import edu.ucb.project.catalog.data.datasource.CatalogRemoteDataSource
+import edu.ucb.project.catalog.data.repository.CatalogRepositoryImpl
+import edu.ucb.project.catalog.data.service.CatalogService
+import edu.ucb.project.catalog.domain.repository.CatalogRepository
 import org.koin.dsl.module
 
 val dataModule = module {
+    single<CatalogRemoteDataSource> { CatalogService() }
+    single<CatalogRepository> { CatalogRepositoryImpl(get()) }
     single<MovieRepository> { MovieRepositoryImpl() }
     single<AuthRepository> { AuthRepositoryImpl() }
     single<SignUpRepository> { SignUpRepositoryImpl() }
