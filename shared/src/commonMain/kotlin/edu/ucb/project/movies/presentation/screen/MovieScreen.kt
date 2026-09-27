@@ -60,14 +60,11 @@ fun MovieScreen(
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
-            TextButton(onClick = { navController.navigate(NavRoute.Catalog) }) {
-                Text("Ver Catalogo")
-            }
             TextButton(onClick = { navController.navigate(NavRoute.Profile) }) {
                 Text("Mi Perfil")
             }
         }
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.weight(1f)) {
             when {
                 state.isLoading -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -108,5 +105,11 @@ fun MovieScreen(
                 }
             }
         }
+    TextButton(
+        onClick = { navController.navigate(NavRoute.Catalog) },
+        modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+    ) {
+        Text("Ver Catalogo")
+    }
     }
 }
