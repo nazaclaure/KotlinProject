@@ -87,12 +87,9 @@ fun MovieScreen(
                                     .clickable {
                                         viewModel.onEvent(MovieEvents.OnMovieClicked(movie.id))
                                     },
-
-
-
                                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                                )
                             ) {
                                 Text(
                                     text = movie.title,
@@ -105,11 +102,11 @@ fun MovieScreen(
                 }
             }
         }
-    TextButton(
-        onClick = { navController.navigate(NavRoute.Catalog) },
-        modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
-    ) {
-        Text("Ver Catalogo")
-    }
+        TextButton(
+            onClick = { navController.navigate(NavRoute.Catalog) },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+        ) {
+            Text("Ver Catalogo")
+        }
     }
 }
