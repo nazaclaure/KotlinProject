@@ -29,3 +29,14 @@ Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
 ---
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+
+## Acceso de prueba
+
+El login es simulado (mock) — acepta cualquier correo con formato válido y cualquier contraseña, no valida contra un backend real.
+
+**Usuario de ejemplo:**
+- Email: profesor@ucb.edu.bo
+- Contraseña: 123456
+
+**Flujo para llegar a la pantalla de Clima:**
+Login → Movies → botón "Ver Clima"
