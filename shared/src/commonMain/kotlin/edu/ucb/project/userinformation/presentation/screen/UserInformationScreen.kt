@@ -3,6 +3,7 @@ package edu.ucb.project.userinformation.presentation.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import coil3.compose.AsyncImage
 import org.koin.compose.viewmodel.koinViewModel
 import edu.ucb.project.core.navigation.NavRoute
 import edu.ucb.project.userinformation.presentation.viewmodel.UserInformationEffect
@@ -118,14 +120,20 @@ fun UserInformationScreen(
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
+                    if (!state.avatarUrl.isNullOrEmpty()) {
+                        AsyncImage(
+                            model = state.avatarUrl,
+                            contentDescription = state.alias,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .aspectRatio(1f)
+                        )
+                    }
                     if (!state.email.isNullOrEmpty()) {
                         InfoRow(label = "Email", value = state.email!!)
                     }
                     if (!state.company.isNullOrEmpty()) {
                         InfoRow(label = "Empresa", value = state.company!!)
-                    }
-                    if (!state.avatarUrl.isNullOrEmpty()) {
-                        InfoRow(label = "Avatar", value = state.avatarUrl!!)
                     }
                 }
             }
