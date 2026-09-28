@@ -12,6 +12,7 @@ import edu.ucb.project.moviedetail.presentation.screen.MovieDetailScreen
 import edu.ucb.project.profile.presentation.screen.ProfileScreen
 import edu.ucb.project.userinformation.presentation.screen.UserInformationScreen
 import edu.ucb.project.catalog.presentation.screen.CatalogScreen
+import edu.ucb.project.weather.presentation.screen.WeatherScreen
 
 @Composable
 fun AppNavHost() {
@@ -39,6 +40,9 @@ fun AppNavHost() {
         }
         composable<NavRoute.Catalog> {
             CatalogScreen(navController = navController)
+        }
+        composable<NavRoute.Weather> {
+            WeatherScreen(navController = navController)
         }
     }
 }

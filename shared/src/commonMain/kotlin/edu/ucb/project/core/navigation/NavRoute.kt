@@ -24,4 +24,7 @@ sealed class NavRoute {
 
     @Serializable
     object Catalog : NavRoute()
+
+    @Serializable
+    object Weather : NavRoute()
 }

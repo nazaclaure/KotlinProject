@@ -106,7 +106,13 @@ fun MovieScreen(
             onClick = { navController.navigate(NavRoute.Catalog) },
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
         ) {
-            Text("Ver Catalogo")
+            Text("Ver Catálogo")
+        }
+        TextButton(
+            onClick = { navController.navigate(NavRoute.Weather) },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+        ) {
+            Text("Ver Clima")
         }
     }
 }
