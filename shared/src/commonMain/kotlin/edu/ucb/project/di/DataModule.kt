@@ -24,8 +24,10 @@ import edu.ucb.project.weather.data.service.WeatherService
 import edu.ucb.project.weather.domain.repository.WeatherRepository
 import edu.ucb.project.config.AppDatabase
 import edu.ucb.project.dollar.data.dao.DollarDao
+import edu.ucb.project.dollar.data.datasource.DollarLocalDataSource
 import edu.ucb.project.dollar.data.repository.DollarRepositoryImpl
 import edu.ucb.project.dollar.domain.repository.DollarRepository
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -41,6 +43,7 @@ val dataModule = module {
     single<WeatherRemoteDataSource> { WeatherService() }
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
     single<DollarDao> { get<AppDatabase>().getDao() }
+    singleOf(::DollarLocalDataSource)
     single<DollarRepository> { DollarRepositoryImpl(get()) }
 }
 
