@@ -114,5 +114,13 @@ fun MovieScreen(
         ) {
             Text("Ver Clima")
         }
+        TextButton(
+            onClick = { navController.navigate(NavRoute.Dollar) },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+        ) {
+            Text("Ver Cambio de Dolar")
+        }
     }
 }
+
+//el boton para acceder a clima, estan aqui la mayoria de botones

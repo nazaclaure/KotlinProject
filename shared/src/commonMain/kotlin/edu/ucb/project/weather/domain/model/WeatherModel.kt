@@ -9,3 +9,5 @@ data class WeatherModel(
     val latitude: Double,
     val longitude: Double
 )
+//domain regla de negocios, que necesita la app
+//7 campos, modelo de datos limpios/planos, no como dto directo de jsn

@@ -12,3 +12,5 @@ fun WeatherDto.toModel(): WeatherModel = WeatherModel(
     latitude = latitude,
     longitude = longitude
 )
+
+//convierte dto a model (aplanando)

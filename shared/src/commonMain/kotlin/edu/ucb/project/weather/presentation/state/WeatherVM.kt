@@ -69,3 +69,5 @@ class WeatherVM(private val getWeatherUseCase: GetWeatherUseCase) : ViewModel() 
         }
     }
 }
+
+//como su cerebro de la pantalla, valida, el launch conecta y fold en el caso de uso

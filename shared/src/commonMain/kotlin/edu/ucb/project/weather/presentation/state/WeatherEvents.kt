@@ -5,3 +5,4 @@ sealed interface WeatherEvents {
     data class OnLongitudeChange(val value: String) : WeatherEvents
     object Search : WeatherEvents
 }
+//3 intenciones del user, acciones

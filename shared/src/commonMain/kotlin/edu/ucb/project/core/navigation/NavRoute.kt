@@ -27,4 +27,9 @@ sealed class NavRoute {
 
     @Serializable
     object Weather : NavRoute()
+
+    @Serializable
+    object Dollar : NavRoute()
 }
+
+//define rutas, pantallas, sealed porque es objeto no data class, serial.. para navegacion segura verificando que exista ruta

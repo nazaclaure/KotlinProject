@@ -22,6 +22,10 @@ import edu.ucb.project.weather.data.datasource.WeatherRemoteDataSource
 import edu.ucb.project.weather.data.repository.WeatherRepositoryImpl
 import edu.ucb.project.weather.data.service.WeatherService
 import edu.ucb.project.weather.domain.repository.WeatherRepository
+import edu.ucb.project.config.AppDatabase
+import edu.ucb.project.dollar.data.dao.DollarDao
+import edu.ucb.project.dollar.data.repository.DollarRepositoryImpl
+import edu.ucb.project.dollar.domain.repository.DollarRepository
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -36,4 +40,9 @@ val dataModule = module {
     single<GithubRepository> { GithubRepositoryImpl(get()) }
     single<WeatherRemoteDataSource> { WeatherService() }
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
+    single<DollarDao> { get<AppDatabase>().getDao() }
+    single<DollarRepository> { DollarRepositoryImpl(get()) }
 }
+
+//implementaciones en la capa de datos, single porque lo hacemos manual interfaz aountada a su impl
+//get le pide la dependencia

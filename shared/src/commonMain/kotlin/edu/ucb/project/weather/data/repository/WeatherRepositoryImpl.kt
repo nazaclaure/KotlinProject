@@ -16,3 +16,5 @@ class WeatherRepositoryImpl(
         }
     }
 }
+
+//implementa el repo, llama a datasource y envuelve el resultado en reuslt, vm no manejara excepciones por el try catch

@@ -10,7 +10,7 @@ data class WeatherDto(
     @SerialName("current_weather")
     val currentWeather: CurrentWeatherDto
 )
-
+//refleja lo del json, dos clases anidadas, el de abajo traduce el snake_case, sino falla
 @Serializable
 data class CurrentWeatherDto(
     val temperature: Double,

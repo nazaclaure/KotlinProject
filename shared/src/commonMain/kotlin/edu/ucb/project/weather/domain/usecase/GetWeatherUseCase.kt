@@ -7,3 +7,4 @@ class GetWeatherUseCase(private val repository: WeatherRepository) {
     suspend operator fun invoke(latitude: Double, longitude: Double): Result<WeatherModel> =
         repository.getWeather(latitude, longitude)
 }
+//recibe y delega al repositorio, fun invoke llamar como funci

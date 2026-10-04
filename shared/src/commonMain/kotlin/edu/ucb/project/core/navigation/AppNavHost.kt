@@ -13,6 +13,7 @@ import edu.ucb.project.profile.presentation.screen.ProfileScreen
 import edu.ucb.project.userinformation.presentation.screen.UserInformationScreen
 import edu.ucb.project.catalog.presentation.screen.CatalogScreen
 import edu.ucb.project.weather.presentation.screen.WeatherScreen
+import edu.ucb.project.dollar.presentation.screen.DollarScreen
 
 @Composable
 fun AppNavHost() {
@@ -44,5 +45,9 @@ fun AppNavHost() {
         composable<NavRoute.Weather> {
             WeatherScreen(navController = navController)
         }
+        composable<NavRoute.Dollar> {
+            DollarScreen(navController = navController)
+        }
     }
 }
+//conecta nav route con su composable, ruta con pantalla

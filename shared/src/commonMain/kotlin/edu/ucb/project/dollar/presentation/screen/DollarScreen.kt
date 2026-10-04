@@ -1,4 +1,4 @@
-package edu.ucb.project.weather.presentation.screen
+package edu.ucb.project.dollar.presentation.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -27,15 +29,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import edu.ucb.project.weather.presentation.state.WeatherEffects
-import edu.ucb.project.weather.presentation.state.WeatherEvents
-import edu.ucb.project.weather.presentation.state.WeatherVM
+import edu.ucb.project.dollar.presentation.state.DollarEffects
+import edu.ucb.project.dollar.presentation.state.DollarEvents
+import edu.ucb.project.dollar.presentation.state.DollarVM
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun WeatherScreen(
+fun DollarScreen(
     navController: NavHostController,
-    viewModel: WeatherVM = koinViewModel()
+    viewModel: DollarVM = koinViewModel()
 ) {
     val state by viewModel.uiState.collectAsState()
     var lastError by remember { mutableStateOf<String?>(null) }
@@ -43,14 +45,12 @@ fun WeatherScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEffect.collect { effect ->
             when (effect) {
-                is WeatherEffects.ShowError -> {
+                is DollarEffects.ShowError -> {
                     lastError = effect.message
                 }
             }
         }
     }
-
-    val hasResult = state.temperature != null
 
     Column(
         modifier = Modifier
@@ -64,23 +64,23 @@ fun WeatherScreen(
         }
 
         Text(
-            text = "Clima",
+            text = "Cambio de Dolar",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
 
         OutlinedTextField(
-            value = state.latitudeInput,
-            onValueChange = { viewModel.onEvent(WeatherEvents.OnLatitudeChange(it)) },
-            label = { Text("Latitud") },
+            value = state.officialInput,
+            onValueChange = { viewModel.onEvent(DollarEvents.OnOfficialChange(it)) },
+            label = { Text("Tasa oficial") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
-            value = state.longitudeInput,
-            onValueChange = { viewModel.onEvent(WeatherEvents.OnLongitudeChange(it)) },
-            label = { Text("Longitud") },
+            value = state.parallelInput,
+            onValueChange = { viewModel.onEvent(DollarEvents.OnParallelChange(it)) },
+            label = { Text("Tasa paralela") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -88,12 +88,11 @@ fun WeatherScreen(
         Button(
             onClick = {
                 lastError = null
-                viewModel.onEvent(WeatherEvents.Search)
+                viewModel.onEvent(DollarEvents.OnAddRecord)
             },
-            enabled = state.latitudeInput.isNotBlank() && state.longitudeInput.isNotBlank() && !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Buscar")
+            Text("Agregar")
         }
 
         if (state.isLoading) {
@@ -102,26 +101,6 @@ fun WeatherScreen(
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
-            }
-        }
-
-        if (hasResult) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    InfoRow(label = "Temperatura", value = "${state.temperature} °C")
-                    InfoRow(label = "Viento", value = "${state.windspeed} km/h")
-                    InfoRow(label = "Direccion del viento", value = "${state.winddirection}°")
-                    InfoRow(label = "Codigo de clima", value = "${state.weathercode}")
-                    InfoRow(label = "Fecha y hora", value = "${state.time}")
-                    InfoRow(label = "Latitud", value = "${state.latitude}")
-                    InfoRow(label = "Longitud", value = "${state.longitude}")
-                }
             }
         }
 
@@ -137,21 +116,21 @@ fun WeatherScreen(
                 )
             }
         }
-    }
-}
 
-@Composable
-private fun InfoRow(label: String, value: String) {
-    Column {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium
-        )
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(state.list) { item ->
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("Oficial: ${item.dollarOfficial}")
+                        Text("Paralelo: ${item.dollarParallel}")
+                    }
+                }
+            }
+        }
     }
 }
-//composable conecta basicamente lo anterior

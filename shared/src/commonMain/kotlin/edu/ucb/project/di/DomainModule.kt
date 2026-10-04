@@ -8,6 +8,8 @@ import edu.ucb.project.profile.domain.usecase.GetProfileUseCase
 import edu.ucb.project.userinformation.domain.usecase.FindAliasUseCase
 import edu.ucb.project.catalog.domain.usecase.GetCatalogUseCase
 import edu.ucb.project.weather.domain.usecase.GetWeatherUseCase
+import edu.ucb.project.dollar.domain.usecase.GetDollarListUseCase
+import edu.ucb.project.dollar.domain.usecase.InsertDollarUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -20,4 +22,7 @@ val domainModule = module {
     singleOf(::GetProfileUseCase)
     singleOf(::FindAliasUseCase)
     singleOf(::GetWeatherUseCase)
+    singleOf(::GetDollarListUseCase)
+    singleOf(::InsertDollarUseCase)
 }
+//el caso de uso, single porque koin lee constructor y resuleve lo que necesita en repo

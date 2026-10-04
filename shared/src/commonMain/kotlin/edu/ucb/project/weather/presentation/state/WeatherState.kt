@@ -13,3 +13,5 @@ data class WeatherState(
     val longitude: Double? = null,
     val error: String? = null
 )
+
+//lo que la pantalla necesita como inputs,loading, resulltado, error

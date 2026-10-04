@@ -21,3 +21,4 @@ class WeatherService : WeatherRemoteDataSource {
         return client.get(url).body()
     }
 }
+//implementa la interfaz de datasource usa ktor, de json a kotlin, ignore para los campos extra
