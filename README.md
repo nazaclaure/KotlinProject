@@ -32,7 +32,7 @@ Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-mu
 
 ## Acceso de prueba
 
-El login es simulado (mock) — acepta cualquier correo con formato válido y cualquier contraseña, no valida contra un backend real.
+El login es simulado (mock) acepta cualquier correo con formato válido y cualquier contraseña, no valida contra un backend real.
 
 **Usuario de ejemplo:**
 - Email: profesor@ucb.edu.bo
