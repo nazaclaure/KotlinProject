@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "200287375468",
+    "firebase_url": "https://kotlinproject-69db0-default-rtdb.firebaseio.com",
+    "project_id": "kotlinproject-69db0",
+    "storage_bucket": "kotlinproject-69db0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200287375468:android:c55e299aa71c56f1f9c849",
+        "android_client_info": {
+          "package_name": "edu.ucb.project.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFZMv7WjLB7dktVvnfDRj99Vv6uAhQBBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200287375468:android:1c563c81afbe3f94f9c849",
+        "android_client_info": {
+          "package_name": "edu.ucb.project.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFZMv7WjLB7dktVvnfDRj99Vv6uAhQBBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

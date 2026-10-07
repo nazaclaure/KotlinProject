@@ -9,6 +9,7 @@ import edu.ucb.project.userinformation.presentation.viewmodel.UserInformationVie
 import edu.ucb.project.catalog.presentation.state.CatalogVM
 import edu.ucb.project.weather.presentation.state.WeatherVM
 import edu.ucb.project.dollar.presentation.state.DollarVM
+import edu.ucb.project.dollar.presentation.state.ExchangeVM // NUEVO
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
@@ -22,6 +23,7 @@ val presentationModule = module {
     viewModelOf(::UserInformationViewModel)
     viewModelOf(::WeatherVM)
     viewModelOf(::DollarVM)
+    viewModelOf(::ExchangeVM) // NUEVO
 }
 
 //view model registrado

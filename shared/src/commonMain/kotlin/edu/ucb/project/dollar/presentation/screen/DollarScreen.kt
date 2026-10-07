@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import edu.ucb.project.core.navigation.NavRoute // NUEVO
 import edu.ucb.project.dollar.presentation.state.DollarEffects
 import edu.ucb.project.dollar.presentation.state.DollarEvents
 import edu.ucb.project.dollar.presentation.state.DollarVM
@@ -93,6 +94,13 @@ fun DollarScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Agregar")
+        }
+
+        Button( // NUEVO
+            onClick = { navController.navigate(NavRoute.Exchange) },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Dolar en vivo (Firebase)")
         }
 
         if (state.isLoading) {

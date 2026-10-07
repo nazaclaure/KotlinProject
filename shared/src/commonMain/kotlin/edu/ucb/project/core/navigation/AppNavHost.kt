@@ -14,6 +14,7 @@ import edu.ucb.project.userinformation.presentation.screen.UserInformationScreen
 import edu.ucb.project.catalog.presentation.screen.CatalogScreen
 import edu.ucb.project.weather.presentation.screen.WeatherScreen
 import edu.ucb.project.dollar.presentation.screen.DollarScreen
+import edu.ucb.project.dollar.presentation.screen.ExchangeScreen
 
 @Composable
 fun AppNavHost() {
@@ -47,6 +48,9 @@ fun AppNavHost() {
         }
         composable<NavRoute.Dollar> {
             DollarScreen(navController = navController)
+        }
+        composable<NavRoute.Exchange> {
+            ExchangeScreen(navController = navController) // CAMBIO
         }
     }
 }
