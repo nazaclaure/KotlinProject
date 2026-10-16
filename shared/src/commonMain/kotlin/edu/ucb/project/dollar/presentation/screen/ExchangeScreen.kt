@@ -18,6 +18,10 @@ import edu.ucb.ds.components.buttons.PrimaryButton
 import edu.ucb.ds.icons.UserIcon
 import edu.ucb.ds.theme.DsTheme
 import edu.ucb.project.dollar.presentation.state.ExchangeVM
+import kotlinproject.shared.generated.resources.Res
+import kotlinproject.shared.generated.resources.exchange_back
+import kotlinproject.shared.generated.resources.exchange_title
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -35,7 +39,7 @@ fun ExchangeScreen(
                 .padding(20.dp)
         ) {
             PrimaryButton(
-                text = "< Volver",
+                text = stringResource(Res.string.exchange_back),
                 onClick = { navController.popBackStack() }
             )
 
@@ -46,9 +50,13 @@ fun ExchangeScreen(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
                         imageVector = UserIcon,
-                        contentDescription = "Usuario",
+                        contentDescription = null,
                         modifier = Modifier.size(48.dp),
                         tint = DsTheme.colors.primary
+                    )
+                    Text(
+                        text = stringResource(Res.string.exchange_title),
+                        style = DsTheme.typography.heading
                     )
                     Text(
                         text = message.value,

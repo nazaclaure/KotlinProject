@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Loco xml export: Android strings
+ Project: KotlinProject
+ Locale: en-US, English (USA)
+ Exported by: NAZARET FABIANE CLAURE MARTINEZ
+ Exported at: Fri, 16 Oct 2026 01:01:55 -0400
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="exchange_back">&lt; Back</string>
+    <string name="exchange_title">Live dollar</string>
+</resources>
