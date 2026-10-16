@@ -75,6 +75,7 @@ kotlin {
             implementation(libs.androidx.room3.runtime)
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.firebase.database)
+            implementation("edu.ucb.ds:shared:1.0.0-SNAPSHOT")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
