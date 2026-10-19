@@ -1,5 +1,9 @@
 package edu.ucb.project.di
 
+import edu.ucb.project.remoteconfig.data.datasource.RemoteConfigDataSource
+import edu.ucb.project.remoteconfig.data.repository.AppConfigRepositoryImpl
+import edu.ucb.project.remoteconfig.domain.repository.AppConfigRepository
+
 import edu.ucb.project.movies.data.repository.MovieRepositoryImpl
 import edu.ucb.project.movies.domain.repository.MovieRepository
 import edu.ucb.project.signin.data.repository.AuthRepositoryImpl
@@ -55,7 +59,9 @@ val dataModule = module {
     singleOf(::RealTimeDataBase)
     single<ExchangeRepository> { ExchangeRepositoryImpl(get()) }
     singleOf(::PushTokenProvider) // NUEVO
-    singleOf(::PushTokenDataBase) // NUEVO
+    singleOf(::PushTokenDataBase)
+    singleOf(::RemoteConfigDataSource)
+    single<AppConfigRepository> { AppConfigRepositoryImpl(get()) } // NUEVO
     single<PushTokenRepository> { PushTokenRepositoryImpl(get(), get()) } // NUEVO
 }
 
