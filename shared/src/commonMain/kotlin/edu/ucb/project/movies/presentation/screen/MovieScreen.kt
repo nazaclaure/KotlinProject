@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import edu.ucb.project.analytics.AnalyticsTracker
 import edu.ucb.project.core.navigation.NavRoute
 import edu.ucb.project.movies.presentation.state.MovieEffects
 import edu.ucb.project.movies.presentation.state.MovieEvents
@@ -42,7 +43,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun MovieScreen(
     navController: NavHostController,
     viewModel: MovieVM = koinViewModel(),
-    getAppConfig: GetAppConfigUseCase = koinInject()
+    getAppConfig: GetAppConfigUseCase = koinInject(),
+    analytics: AnalyticsTracker = koinInject()
 ) {
     val state by viewModel.uiState.collectAsState()
 
@@ -51,6 +53,11 @@ fun MovieScreen(
 
     LaunchedEffect(Unit) {
         config = getAppConfig()
+    }
+
+    // ANALYTICS: el usuario abrio la pantalla de peliculas
+    LaunchedEffect(Unit) {
+        analytics.logEvent("view_movies", emptyMap())
     }
 
     LaunchedEffect(Unit) {
@@ -123,6 +130,11 @@ fun MovieScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
+                                        // ANALYTICS: el usuario toco una pelicula
+                                        analytics.logEvent(
+                                            "movie_click",
+                                            mapOf("movie_id" to movie.id.toString())
+                                        )
                                         viewModel.onEvent(MovieEvents.OnMovieClicked(movie.id))
                                     },
                                 colors = CardDefaults.cardColors(

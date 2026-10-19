@@ -1,5 +1,7 @@
 package edu.ucb.project.di
 
+import edu.ucb.project.analytics.AnalyticsTracker
+
 import edu.ucb.project.remoteconfig.data.datasource.RemoteConfigDataSource
 import edu.ucb.project.remoteconfig.data.repository.AppConfigRepositoryImpl
 import edu.ucb.project.remoteconfig.domain.repository.AppConfigRepository
@@ -58,7 +60,8 @@ val dataModule = module {
     single<DollarRepository> { DollarRepositoryImpl(get()) }
     singleOf(::RealTimeDataBase)
     single<ExchangeRepository> { ExchangeRepositoryImpl(get()) }
-    singleOf(::PushTokenProvider) // NUEVO
+    singleOf(::PushTokenProvider)
+    singleOf(::AnalyticsTracker) // NUEVO
     singleOf(::PushTokenDataBase)
     singleOf(::RemoteConfigDataSource)
     single<AppConfigRepository> { AppConfigRepositoryImpl(get()) } // NUEVO
