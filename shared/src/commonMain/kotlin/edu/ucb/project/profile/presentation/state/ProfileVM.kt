@@ -3,6 +3,7 @@ package edu.ucb.project.profile.presentation.state
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.ucb.project.profile.domain.usecase.GetProfileUseCase
+import edu.ucb.project.push.domain.usecase.UnregisterPushTokenUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -12,7 +13,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ProfileVM(private val getProfileUseCase: GetProfileUseCase) : ViewModel() {
+class ProfileVM(
+    private val getProfileUseCase: GetProfileUseCase,
+    private val unregisterPushTokenUseCase: UnregisterPushTokenUseCase
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState())
     val uiState: StateFlow<ProfileState> = _uiState.asStateFlow()
 
@@ -23,7 +27,11 @@ class ProfileVM(private val getProfileUseCase: GetProfileUseCase) : ViewModel() 
         when (event) {
             is ProfileEvents.LoadProfile -> fetchProfile()
             is ProfileEvents.OnLogout -> {
-                viewModelScope.launch { _uiEffect.emit(ProfileEffects.NavigateToLogin) }
+                viewModelScope.launch {
+                    // Borra el token FCM para dejar de recibir notificaciones del usuario
+                    unregisterPushTokenUseCase()
+                    _uiEffect.emit(ProfileEffects.NavigateToLogin)
+                }
             }
         }
     }

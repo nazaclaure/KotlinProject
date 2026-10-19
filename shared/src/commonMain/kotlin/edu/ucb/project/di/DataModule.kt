@@ -25,11 +25,15 @@ import edu.ucb.project.weather.domain.repository.WeatherRepository
 import edu.ucb.project.config.AppDatabase
 import edu.ucb.project.dollar.data.dao.DollarDao
 import edu.ucb.project.dollar.data.datasource.DollarLocalDataSource
-import edu.ucb.project.dollar.data.datasource.RealTimeDataBase // NUEVO
+import edu.ucb.project.dollar.data.datasource.RealTimeDataBase
 import edu.ucb.project.dollar.data.repository.DollarRepositoryImpl
-import edu.ucb.project.dollar.data.repository.ExchangeRepositoryImpl // NUEVO
+import edu.ucb.project.dollar.data.repository.ExchangeRepositoryImpl
 import edu.ucb.project.dollar.domain.repository.DollarRepository
-import edu.ucb.project.dollar.domain.repository.ExchangeRepository // NUEVO
+import edu.ucb.project.dollar.domain.repository.ExchangeRepository
+import edu.ucb.project.push.data.datasource.PushTokenDataBase // NUEVO
+import edu.ucb.project.push.data.provider.PushTokenProvider // NUEVO
+import edu.ucb.project.push.data.repository.PushTokenRepositoryImpl // NUEVO
+import edu.ucb.project.push.domain.repository.PushTokenRepository // NUEVO
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -48,8 +52,11 @@ val dataModule = module {
     single<DollarDao> { get<AppDatabase>().getDao() }
     singleOf(::DollarLocalDataSource)
     single<DollarRepository> { DollarRepositoryImpl(get()) }
-    singleOf(::RealTimeDataBase) // NUEVO
-    single<ExchangeRepository> { ExchangeRepositoryImpl(get()) } // NUEVO
+    singleOf(::RealTimeDataBase)
+    single<ExchangeRepository> { ExchangeRepositoryImpl(get()) }
+    singleOf(::PushTokenProvider) // NUEVO
+    singleOf(::PushTokenDataBase) // NUEVO
+    single<PushTokenRepository> { PushTokenRepositoryImpl(get(), get()) } // NUEVO
 }
 
 //implementaciones en la capa de datos, single porque lo hacemos manual interfaz aountada a su impl

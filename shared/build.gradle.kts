@@ -54,6 +54,8 @@ kotlin {
             implementation(libs.compose.uiTooling)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.room3.sqlite.wrapper)
+            implementation(project.dependencies.platform("com.google.firebase:firebase-bom:34.0.0"))
+            implementation("com.google.firebase:firebase-messaging")
         }
         commonMain.dependencies {
             implementation(libs.koin.core)

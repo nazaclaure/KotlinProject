@@ -2,6 +2,7 @@ package edu.ucb.project.signin.presentation.state
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import edu.ucb.project.push.domain.usecase.RegisterPushTokenUseCase
 import edu.ucb.project.signin.domain.usecase.LoginUseCase
 import edu.ucb.project.signin.domain.vo.Email
 import edu.ucb.project.signin.domain.vo.Password
@@ -14,7 +15,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SignInVM(private val loginUseCase: LoginUseCase) : ViewModel() {
+class SignInVM(
+    private val loginUseCase: LoginUseCase,
+    private val registerPushTokenUseCase: RegisterPushTokenUseCase
+) : ViewModel() {
     private val _uiState = MutableStateFlow(SignInState())
     val uiState: StateFlow<SignInState> = _uiState.asStateFlow()
 
@@ -36,7 +40,9 @@ class SignInVM(private val loginUseCase: LoginUseCase) : ViewModel() {
             val password = Password(_uiState.value.pass)
 
             loginUseCase(email, password).fold(
-                onSuccess = {
+                onSuccess = { user ->
+                    // Guarda el token FCM asociado al usuario (si falla, el login sigue)
+                    registerPushTokenUseCase(user.id, user.email)
                     _uiState.update { it.copy(isLoading = false) }
                     _uiEffect.emit(SignInEffects.NavigateToMovies)
                 },
