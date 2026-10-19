@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.firebase.messaging.FirebaseMessaging
+import edu.ucb.project.push.NotificationHelper
 
 class MainActivity : ComponentActivity() {
 
@@ -33,6 +34,7 @@ class MainActivity : ComponentActivity() {
         Log.d("CONFIG_TEST", BuildConfig.BASE_URL)
         Log.d("CONFIG_TEST", BuildConfig.APP_NAME)
 
+        NotificationHelper.crearCanal(this)
         pedirPermisoNotificaciones()
         obtenerTokenFcm()
 
