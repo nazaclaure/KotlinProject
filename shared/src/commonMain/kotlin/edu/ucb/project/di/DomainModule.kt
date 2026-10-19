@@ -11,8 +11,9 @@ import edu.ucb.project.weather.domain.usecase.GetWeatherUseCase
 import edu.ucb.project.dollar.domain.usecase.GetDollarListUseCase
 import edu.ucb.project.dollar.domain.usecase.InsertDollarUseCase
 import edu.ucb.project.dollar.domain.usecase.ObserveExchangeUseCase
-import edu.ucb.project.push.domain.usecase.RegisterPushTokenUseCase // NUEVO
-import edu.ucb.project.push.domain.usecase.UnregisterPushTokenUseCase // NUEVO
+import edu.ucb.project.push.domain.usecase.RefreshPushTokenUseCase // NUEVO
+import edu.ucb.project.push.domain.usecase.RegisterPushTokenUseCase
+import edu.ucb.project.push.domain.usecase.UnregisterPushTokenUseCase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -28,8 +29,9 @@ val domainModule = module {
     singleOf(::GetDollarListUseCase)
     singleOf(::InsertDollarUseCase)
     singleOf(::ObserveExchangeUseCase)
-    singleOf(::RegisterPushTokenUseCase) // NUEVO
-    singleOf(::UnregisterPushTokenUseCase) // NUEVO
+    singleOf(::RegisterPushTokenUseCase)
+    singleOf(::UnregisterPushTokenUseCase)
+    singleOf(::RefreshPushTokenUseCase) // NUEVO
 }
 
 //el caso de uso, single porque koin lee constructor y resuleve lo que necesita en repo
