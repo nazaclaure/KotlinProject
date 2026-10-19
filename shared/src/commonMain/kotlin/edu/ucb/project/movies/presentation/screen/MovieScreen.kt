@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -27,11 +28,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import edu.ucb.project.analytics.AnalyticsTracker
 import edu.ucb.project.core.navigation.NavRoute
+import edu.ucb.project.core.survey.SurveyConfig
 import edu.ucb.project.core.theme.LocalThemeController
 import edu.ucb.project.core.theme.ThemeChoice
 import edu.ucb.project.movies.presentation.state.MovieEffects
@@ -39,6 +42,7 @@ import edu.ucb.project.movies.presentation.state.MovieEvents
 import edu.ucb.project.movies.presentation.state.MovieVM
 import edu.ucb.project.remoteconfig.domain.model.AppConfig
 import edu.ucb.project.remoteconfig.domain.usecase.GetAppConfigUseCase
+import kotlinx.coroutines.delay
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -51,9 +55,13 @@ fun MovieScreen(
 ) {
     val state by viewModel.uiState.collectAsState()
     val themeController = LocalThemeController.current
+    val uriHandler = LocalUriHandler.current
 
     // REMOTE CONFIG: valores remotos (mensaje de bienvenida y promo)
     var config by remember { mutableStateOf(AppConfig.DEFAULT) }
+
+    // SURVEYMONKEY: invitacion a la encuesta
+    var showSurveyPrompt by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         config = getAppConfig()
@@ -62,6 +70,15 @@ fun MovieScreen(
     // ANALYTICS: el usuario abrio la pantalla de peliculas
     LaunchedEffect(Unit) {
         analytics.logEvent("view_movies", emptyMap())
+    }
+
+    // SURVEYMONKEY: a los 8 segundos, una sola vez por sesion, invita a responder la encuesta
+    LaunchedEffect(Unit) {
+        if (!SurveyConfig.promptShown) {
+            delay(8_000)
+            SurveyConfig.promptShown = true
+            showSurveyPrompt = true
+        }
     }
 
     LaunchedEffect(Unit) {
@@ -73,6 +90,28 @@ fun MovieScreen(
                 }
             }
         }
+    }
+
+    if (showSurveyPrompt) {
+        AlertDialog(
+            onDismissRequest = { showSurveyPrompt = false },
+            title = { Text("¿Nos ayudas a mejorar?") },
+            text = { Text("Cuéntanos si te gusta la app. Solo toma un minuto.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    showSurveyPrompt = false
+                    analytics.logEvent("open_survey", mapOf("source" to "prompt"))
+                    uriHandler.openUri(SurveyConfig.SURVEY_URL)
+                }) {
+                    Text("Responder encuesta")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showSurveyPrompt = false }) {
+                    Text("Más tarde")
+                }
+            }
+        )
     }
 
     Column(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
@@ -198,6 +237,16 @@ fun MovieScreen(
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
         ) {
             Text("Ver Cambio de Dolar")
+        }
+        // SURVEYMONKEY: boton fijo para abrir la encuesta cuando el usuario quiera
+        TextButton(
+            onClick = {
+                analytics.logEvent("open_survey", mapOf("source" to "button"))
+                uriHandler.openUri(SurveyConfig.SURVEY_URL)
+            },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
+        ) {
+            Text("Dar mi opinión")
         }
     }
 }
