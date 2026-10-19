@@ -21,6 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -30,14 +33,25 @@ import edu.ucb.project.core.navigation.NavRoute
 import edu.ucb.project.movies.presentation.state.MovieEffects
 import edu.ucb.project.movies.presentation.state.MovieEvents
 import edu.ucb.project.movies.presentation.state.MovieVM
+import edu.ucb.project.remoteconfig.domain.model.AppConfig
+import edu.ucb.project.remoteconfig.domain.usecase.GetAppConfigUseCase
+import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MovieScreen(
     navController: NavHostController,
-    viewModel: MovieVM = koinViewModel()
+    viewModel: MovieVM = koinViewModel(),
+    getAppConfig: GetAppConfigUseCase = koinInject()
 ) {
     val state by viewModel.uiState.collectAsState()
+
+    // REMOTE CONFIG: valores remotos (mensaje de bienvenida y promo)
+    var config by remember { mutableStateOf(AppConfig.DEFAULT) }
+
+    LaunchedEffect(Unit) {
+        config = getAppConfig()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(MovieEvents.LoadMovies)
@@ -64,6 +78,30 @@ fun MovieScreen(
                 Text("Mi Perfil")
             }
         }
+
+        // Mensaje que viene de Remote Config
+        Text(
+            text = config.mensajeBienvenida,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        )
+
+        // Promo: solo se muestra si Remote Config lo activa
+        if (config.mostrarPromo) {
+            Card(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                )
+            ) {
+                Text(
+                    text = "¡Promoción especial activada desde Remote Config!",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
         Box(modifier = Modifier.weight(1f)) {
             when {
                 state.isLoading -> {
