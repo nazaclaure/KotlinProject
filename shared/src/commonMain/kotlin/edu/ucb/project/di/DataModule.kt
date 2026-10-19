@@ -1,5 +1,7 @@
 package edu.ucb.project.di
 
+import edu.ucb.project.dollar.data.datasource.DollarFirestoreDataSource
+
 import edu.ucb.project.analytics.AnalyticsTracker
 
 import edu.ucb.project.remoteconfig.data.datasource.RemoteConfigDataSource
@@ -57,11 +59,12 @@ val dataModule = module {
     single<WeatherRepository> { WeatherRepositoryImpl(get()) }
     single<DollarDao> { get<AppDatabase>().getDao() }
     singleOf(::DollarLocalDataSource)
-    single<DollarRepository> { DollarRepositoryImpl(get()) }
+    single<DollarRepository> { DollarRepositoryImpl(get(), get()) }
     singleOf(::RealTimeDataBase)
     single<ExchangeRepository> { ExchangeRepositoryImpl(get()) }
     singleOf(::PushTokenProvider)
-    singleOf(::AnalyticsTracker) // NUEVO
+    singleOf(::AnalyticsTracker)
+    singleOf(::DollarFirestoreDataSource) // NUEVO
     singleOf(::PushTokenDataBase)
     singleOf(::RemoteConfigDataSource)
     single<AppConfigRepository> { AppConfigRepositoryImpl(get()) } // NUEVO
