@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import edu.ucb.project.analytics.AnalyticsTracker
 import edu.ucb.project.core.navigation.NavRoute
+import edu.ucb.project.core.theme.LocalThemeController
+import edu.ucb.project.core.theme.ThemeChoice
 import edu.ucb.project.movies.presentation.state.MovieEffects
 import edu.ucb.project.movies.presentation.state.MovieEvents
 import edu.ucb.project.movies.presentation.state.MovieVM
@@ -47,6 +50,7 @@ fun MovieScreen(
     analytics: AnalyticsTracker = koinInject()
 ) {
     val state by viewModel.uiState.collectAsState()
+    val themeController = LocalThemeController.current
 
     // REMOTE CONFIG: valores remotos (mensaje de bienvenida y promo)
     var config by remember { mutableStateOf(AppConfig.DEFAULT) }
@@ -83,6 +87,31 @@ fun MovieScreen(
             )
             TextButton(onClick = { navController.navigate(NavRoute.Profile) }) {
                 Text("Mi Perfil")
+            }
+        }
+
+        // DESIGN SYSTEM: selector de tema (sistema, claro, oscuro, alto contraste)
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            listOf(
+                ThemeChoice.SYSTEM to "Sistema",
+                ThemeChoice.LIGHT to "Claro",
+                ThemeChoice.DARK to "Oscuro",
+                ThemeChoice.HIGH_CONTRAST to "Contraste"
+            ).forEach { (option, label) ->
+                TextButton(
+                    onClick = { themeController.onChoiceChange(option) },
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(horizontal = 4.dp)
+                ) {
+                    Text(
+                        text = label,
+                        maxLines = 1,
+                        fontWeight = if (themeController.choice == option) FontWeight.Bold else FontWeight.Normal
+                    )
+                }
             }
         }
 
