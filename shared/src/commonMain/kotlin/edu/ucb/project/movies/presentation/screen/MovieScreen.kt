@@ -1,5 +1,8 @@
 package edu.ucb.project.movies.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -98,20 +101,20 @@ fun MovieScreen(
     if (showSurveyPrompt) {
         AlertDialog(
             onDismissRequest = { showSurveyPrompt = false },
-            title = { Text("¿Nos ayudas a mejorar?") },
-            text = { Text("Cuéntanos si te gusta la app. Solo toma un minuto.") },
+            title = { Text(stringResource(Res.string.survey_title)) },
+            text = { Text(stringResource(Res.string.survey_text)) },
             confirmButton = {
                 TextButton(onClick = {
                     showSurveyPrompt = false
                     analytics.logEvent("open_survey", mapOf("source" to "prompt"))
                     uriHandler.openUri(SurveyConfig.SURVEY_URL)
                 }) {
-                    Text("Responder encuesta")
+                    Text(stringResource(Res.string.survey_answer))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showSurveyPrompt = false }) {
-                    Text("Más tarde")
+                    Text(stringResource(Res.string.survey_later))
                 }
             }
         )
@@ -123,12 +126,12 @@ fun MovieScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Películas",
+                text = stringResource(Res.string.movies_title),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
             TextButton(onClick = { navController.navigate(NavRoute.Profile) }) {
-                Text("Mi Perfil")
+                Text(stringResource(Res.string.movies_profile))
             }
         }
 
@@ -148,7 +151,7 @@ fun MovieScreen(
                 )
             ) {
                 Text(
-                    text = "¡Promoción especial activada desde Remote Config!",
+                    text = stringResource(Res.string.movies_promo),
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(16.dp)
                 )
@@ -162,7 +165,7 @@ fun MovieScreen(
                 }
                 state.error != null -> {
                     Text(
-                        text = "Error: ${state.error}",
+                        text = stringResource(Res.string.common_error, state.error.toString()),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
@@ -202,19 +205,19 @@ fun MovieScreen(
             onClick = { navController.navigate(NavRoute.Catalog) },
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
         ) {
-            Text("Ver Catálogo")
+            Text(stringResource(Res.string.movies_catalog))
         }
         TextButton(
             onClick = { navController.navigate(NavRoute.Weather) },
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
         ) {
-            Text("Ver Clima")
+            Text(stringResource(Res.string.movies_weather))
         }
         TextButton(
             onClick = { navController.navigate(NavRoute.Dollar) },
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
         ) {
-            Text("Ver Cambio de Dolar")
+            Text(stringResource(Res.string.movies_dollar))
         }
         // SURVEYMONKEY: boton fijo para abrir la encuesta cuando el usuario quiera
         TextButton(
@@ -224,7 +227,7 @@ fun MovieScreen(
             },
             modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
         ) {
-            Text("Dar mi opinión")
+            Text(stringResource(Res.string.movies_feedback))
         }
     }
 }

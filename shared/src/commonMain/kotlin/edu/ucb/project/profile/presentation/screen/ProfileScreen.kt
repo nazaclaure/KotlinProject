@@ -1,5 +1,8 @@
 package edu.ucb.project.profile.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -60,7 +63,7 @@ fun ProfileScreen(
             }
             state.error != null -> {
                 Text(
-                    text = "Error: ${state.error}",
+                    text = stringResource(Res.string.common_error, state.error.toString()),
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
@@ -70,7 +73,7 @@ fun ProfileScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     TextButton(onClick = { navController.popBackStack() }) {
-                        Text("< Volver")
+                        Text(stringResource(Res.string.common_back))
                     }
 
                     Card(
@@ -98,7 +101,7 @@ fun ProfileScreen(
                         onClick = { navController.navigate(NavRoute.UserInformation) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Buscar en GitHub")
+                        Text(stringResource(Res.string.profile_github))
                     }
 
                     AppearanceSettings()
@@ -107,7 +110,7 @@ fun ProfileScreen(
                         onClick = { viewModel.onEvent(ProfileEvents.OnLogout) },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cerrar Sesión")
+                        Text(stringResource(Res.string.profile_logout))
                     }
                 }
             }

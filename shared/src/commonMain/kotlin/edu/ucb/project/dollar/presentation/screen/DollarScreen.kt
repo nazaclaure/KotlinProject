@@ -1,5 +1,8 @@
 package edu.ucb.project.dollar.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,11 +64,11 @@ fun DollarScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TextButton(onClick = { navController.popBackStack() }) {
-            Text("< Volver")
+            Text(stringResource(Res.string.common_back))
         }
 
         Text(
-            text = "Cambio de Dolar",
+            text = stringResource(Res.string.dollar_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -73,7 +76,7 @@ fun DollarScreen(
         OutlinedTextField(
             value = state.officialInput,
             onValueChange = { viewModel.onEvent(DollarEvents.OnOfficialChange(it)) },
-            label = { Text("Tasa oficial") },
+            label = { Text(stringResource(Res.string.dollar_official_rate)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -81,7 +84,7 @@ fun DollarScreen(
         OutlinedTextField(
             value = state.parallelInput,
             onValueChange = { viewModel.onEvent(DollarEvents.OnParallelChange(it)) },
-            label = { Text("Tasa paralela") },
+            label = { Text(stringResource(Res.string.dollar_parallel_rate)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -93,14 +96,14 @@ fun DollarScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Agregar")
+            Text(stringResource(Res.string.dollar_add))
         }
 
         Button( // NUEVO
             onClick = { navController.navigate(NavRoute.Exchange) },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Dolar en vivo (Firebase)")
+            Text(stringResource(Res.string.dollar_live_firebase))
         }
 
         if (state.isLoading) {
@@ -134,8 +137,8 @@ fun DollarScreen(
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text("Oficial: ${item.dollarOfficial}")
-                        Text("Paralelo: ${item.dollarParallel}")
+                        Text(stringResource(Res.string.dollar_official_value, item.dollarOfficial.toString()))
+                        Text(stringResource(Res.string.dollar_parallel_value, item.dollarParallel.toString()))
                     }
                 }
             }

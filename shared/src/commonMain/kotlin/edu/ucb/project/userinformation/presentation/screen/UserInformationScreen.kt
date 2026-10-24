@@ -1,5 +1,8 @@
 package edu.ucb.project.userinformation.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -69,11 +72,11 @@ fun UserInformationScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TextButton(onClick = { viewModel.emitEvent(UserInformationEvent.OnBack) }) {
-            Text("< Volver")
+            Text(stringResource(Res.string.common_back))
         }
 
         Text(
-            text = "Buscar en GitHub",
+            text = stringResource(Res.string.profile_github),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -81,7 +84,7 @@ fun UserInformationScreen(
         OutlinedTextField(
             value = state.alias,
             onValueChange = { viewModel.emitEvent(UserInformationEvent.OnAliasChange(it)) },
-            label = { Text("Usuario de GitHub") },
+            label = { Text(stringResource(Res.string.github_user)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -94,7 +97,7 @@ fun UserInformationScreen(
             enabled = state.alias.isNotBlank() && !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Buscar")
+            Text(stringResource(Res.string.common_search))
         }
 
         if (state.isLoading) {

@@ -18,6 +18,8 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
 
 // Ajustes de apariencia: tema y tamano de texto.
 // Cada opcion ocupa una linea completa para que el texto nunca se corte.
@@ -26,13 +28,13 @@ fun AppearanceSettings(modifier: Modifier = Modifier) {
     val controller = LocalThemeController.current
 
     Column(modifier = modifier.fillMaxWidth()) {
-        SettingsTitle("Tema")
+        SettingsTitle(stringResource(Res.string.appearance_theme))
         Column(modifier = Modifier.selectableGroup()) {
             listOf(
-                ThemeChoice.SYSTEM to "Seguir al sistema",
-                ThemeChoice.LIGHT to "Claro",
-                ThemeChoice.DARK to "Oscuro",
-                ThemeChoice.HIGH_CONTRAST to "Alto contraste"
+                ThemeChoice.SYSTEM to stringResource(Res.string.theme_system),
+                ThemeChoice.LIGHT to stringResource(Res.string.theme_light),
+                ThemeChoice.DARK to stringResource(Res.string.theme_dark),
+                ThemeChoice.HIGH_CONTRAST to stringResource(Res.string.theme_high_contrast)
             ).forEach { (option, label) ->
                 OptionRow(
                     label = label,
@@ -42,13 +44,13 @@ fun AppearanceSettings(modifier: Modifier = Modifier) {
             }
         }
 
-        SettingsTitle("Tama\u00f1o de texto")
+        SettingsTitle(stringResource(Res.string.appearance_font_size))
         Column(modifier = Modifier.selectableGroup()) {
             listOf(
-                FontSizeChoice.SMALL to "Peque\u00f1o",
-                FontSizeChoice.NORMAL to "Normal",
-                FontSizeChoice.LARGE to "Grande",
-                FontSizeChoice.EXTRA_LARGE to "Muy grande"
+                FontSizeChoice.SMALL to stringResource(Res.string.font_small),
+                FontSizeChoice.NORMAL to stringResource(Res.string.font_normal),
+                FontSizeChoice.LARGE to stringResource(Res.string.font_large),
+                FontSizeChoice.EXTRA_LARGE to stringResource(Res.string.font_extra_large)
             ).forEach { (option, label) ->
                 OptionRow(
                     label = label,

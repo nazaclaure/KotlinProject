@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
- Loco xml export: Android strings
- Project: KotlinProject
- Locale: en-US, English (USA)
- Exported by: NAZARET FABIANE CLAURE MARTINEZ
- Exported at: Fri, 16 Oct 2026 01:01:55 -0400
--->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <string name="exchange_back">&lt; Back</string>
     <string name="exchange_title">Live dollar</string>
+    <string name="common_back">&lt; Back</string>
+    <string name="common_error">Error: %1$s</string>
+    <string name="common_search">Search</string>
+    <string name="common_email">Email</string>
+    <string name="common_password">Password</string>
+
+    <string name="movies_title">Movies</string>
+    <string name="movies_profile">My Profile</string>
+    <string name="movies_promo">Special promotion enabled from Remote Config!</string>
+    <string name="movies_catalog">View Catalog</string>
+    <string name="movies_weather">View Weather</string>
+    <string name="movies_dollar">View Dollar Exchange</string>
+    <string name="movies_feedback">Give feedback</string>
+    <string name="survey_title">Will you help us improve?</string>
+    <string name="survey_text">Tell us if you like the app. It only takes a minute.</string>
+    <string name="survey_answer">Take the survey</string>
+    <string name="survey_later">Later</string>
+
+    <string name="profile_github">Search on GitHub</string>
+    <string name="profile_logout">Log out</string>
+
+    <string name="appearance_theme">Theme</string>
+    <string name="theme_system">Follow system</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_high_contrast">High contrast</string>
+    <string name="appearance_font_size">Text size</string>
+    <string name="font_small">Small</string>
+    <string name="font_normal">Normal</string>
+    <string name="font_large">Large</string>
+    <string name="font_extra_large">Extra large</string>
+
+    <string name="login_welcome">Welcome</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="login_button">Sign In</string>
+    <string name="login_no_account">Don&#8217;t have an account? Sign up</string>
+    <string name="login_show_password">Show password</string>
+    <string name="login_hide_password">Hide password</string>
+
+    <string name="signup_title">Create Account</string>
+    <string name="signup_name">Name</string>
+    <string name="signup_button">Sign Up</string>
+
+    <string name="github_user">GitHub username</string>
+
+    <string name="weather_title">Weather</string>
+    <string name="weather_latitude">Latitude</string>
+    <string name="weather_longitude">Longitude</string>
+
+    <string name="dollar_title">Dollar Exchange</string>
+    <string name="dollar_official_rate">Official rate</string>
+    <string name="dollar_parallel_rate">Parallel rate</string>
+    <string name="dollar_add">Add</string>
+    <string name="dollar_live_firebase">Live dollar (Firebase)</string>
+    <string name="dollar_official_value">Official: %1$s</string>
+    <string name="dollar_parallel_value">Parallel: %1$s</string>
 </resources>

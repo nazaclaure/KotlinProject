@@ -1,5 +1,8 @@
 package edu.ucb.project.signin.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -73,12 +76,12 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Bienvenido",
+            text = stringResource(Res.string.login_welcome),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "Inicia sesión para continuar",
+            text = stringResource(Res.string.login_subtitle),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 24.dp)
@@ -87,7 +90,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = state.email,
             onValueChange = { viewModel.onEvent(SignInEvents.OnEmailChanged(it)) },
-            label = { Text("Correo electrónico") },
+            label = { Text(stringResource(Res.string.common_email)) },
             leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
             singleLine = true,
@@ -97,13 +100,13 @@ fun LoginScreen(
         OutlinedTextField(
             value = state.pass,
             onValueChange = { viewModel.onEvent(SignInEvents.OnPasswordChanged(it)) },
-            label = { Text("Contraseña") },
+            label = { Text(stringResource(Res.string.common_password)) },
             leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
             trailingIcon = {
                 IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                     Icon(
                         imageVector = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                        contentDescription = if (isPasswordVisible) "Ocultar contrase\u00f1a" else "Mostrar contrase\u00f1a"
+                        contentDescription = if (isPasswordVisible) stringResource(Res.string.login_hide_password) else stringResource(Res.string.login_show_password)
                     )
                 }
             },
@@ -119,7 +122,7 @@ fun LoginScreen(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
             ) {
                 Text(
-                    text = "Error: ${state.error}",
+                    text = stringResource(Res.string.common_error, state.error.toString()),
                     color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.padding(12.dp)
                 )
@@ -136,14 +139,14 @@ fun LoginScreen(
                 CircularProgressIndicator(modifier = Modifier.padding(4.dp))
             } else {
                 Text(
-                    text = "Iniciar Sesión",
+                    text = stringResource(Res.string.login_button),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
             }
         }
         TextButton(onClick = { navController.navigate(NavRoute.SignUp) }) {
-            Text("¿No tienes cuenta? Regístrate")
+            Text(stringResource(Res.string.login_no_account))
         }
     }
 }

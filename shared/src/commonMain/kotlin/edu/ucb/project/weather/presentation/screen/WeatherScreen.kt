@@ -1,5 +1,8 @@
 package edu.ucb.project.weather.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,11 +63,11 @@ fun WeatherScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         TextButton(onClick = { navController.popBackStack() }) {
-            Text("< Volver")
+            Text(stringResource(Res.string.common_back))
         }
 
         Text(
-            text = "Clima",
+            text = stringResource(Res.string.weather_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -72,7 +75,7 @@ fun WeatherScreen(
         OutlinedTextField(
             value = state.latitudeInput,
             onValueChange = { viewModel.onEvent(WeatherEvents.OnLatitudeChange(it)) },
-            label = { Text("Latitud") },
+            label = { Text(stringResource(Res.string.weather_latitude)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -80,7 +83,7 @@ fun WeatherScreen(
         OutlinedTextField(
             value = state.longitudeInput,
             onValueChange = { viewModel.onEvent(WeatherEvents.OnLongitudeChange(it)) },
-            label = { Text("Longitud") },
+            label = { Text(stringResource(Res.string.weather_longitude)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -93,7 +96,7 @@ fun WeatherScreen(
             enabled = state.latitudeInput.isNotBlank() && state.longitudeInput.isNotBlank() && !state.isLoading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Buscar")
+            Text(stringResource(Res.string.common_search))
         }
 
         if (state.isLoading) {

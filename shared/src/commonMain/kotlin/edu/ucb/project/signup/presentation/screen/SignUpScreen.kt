@@ -1,5 +1,8 @@
 package edu.ucb.project.signup.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,11 +55,11 @@ fun SignUpScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         TextButton(onClick = { navController.popBackStack() }) {
-            Text("< Volver")
+            Text(stringResource(Res.string.common_back))
         }
 
         Text(
-            text = "Crear Cuenta",
+            text = stringResource(Res.string.signup_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
@@ -64,21 +67,21 @@ fun SignUpScreen(
         OutlinedTextField(
             value = state.name,
             onValueChange = { viewModel.onEvent(SignUpEvents.OnNameChanged(it)) },
-            label = { Text("Nombre") },
+            label = { Text(stringResource(Res.string.signup_name)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
             value = state.email,
             onValueChange = { viewModel.onEvent(SignUpEvents.OnEmailChanged(it)) },
-            label = { Text("Correo Electrónico") },
+            label = { Text(stringResource(Res.string.common_email)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
             value = state.pass,
             onValueChange = { viewModel.onEvent(SignUpEvents.OnPasswordChanged(it)) },
-            label = { Text("Contraseña") },
+            label = { Text(stringResource(Res.string.common_password)) },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth()
@@ -90,7 +93,7 @@ fun SignUpScreen(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
             ) {
                 Text(
-                    text = "Error: ${state.error}",
+                    text = stringResource(Res.string.common_error, state.error.toString()),
                     color = MaterialTheme.colorScheme.onErrorContainer,
                     modifier = Modifier.padding(12.dp)
                 )
@@ -105,7 +108,7 @@ fun SignUpScreen(
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.padding(4.dp))
             } else {
-                Text("Registrarse")
+                Text(stringResource(Res.string.signup_button))
             }
         }
     }
