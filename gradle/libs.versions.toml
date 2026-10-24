@@ -28,6 +28,7 @@ firebaseConfig = "2.7.0"
 firebaseFirestore = "2.7.0"
 googleServices = "4.4.2"
 wire = "7.1.0"
+workRuntimeKtx = "2.11.0"
 
 [libraries]
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinBom" }
@@ -69,6 +70,7 @@ androidx-room3-compiler = { module = "androidx.room3:room3-compiler", version.re
 androidx-room3-sqlite-wrapper = { module = "androidx.room3:room3-sqlite-wrapper", version.ref = "room3" }
 wire-runtime = { module = "com.squareup.wire:wire-runtime", version.ref = "wire" }
 wire-grpc-client = { module = "com.squareup.wire:wire-grpc-client", version.ref = "wire" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntimeKtx" }
 
 firebase-database = { module = "dev.gitlive:firebase-database", version.ref = "firebaseDatabase" }
 firebase-config = { module = "dev.gitlive:firebase-config", version.ref = "firebaseConfig" }
