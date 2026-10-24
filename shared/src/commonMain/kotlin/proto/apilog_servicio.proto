@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option java_package = "com.develoop.logs";
+
+import "apilog_model.proto";
+
+service LogService {
+  rpc send(LogRequest) returns (LogResponse);
+}

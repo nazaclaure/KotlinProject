@@ -3,6 +3,11 @@ package edu.ucb.project.di
 import edu.ucb.project.dollar.data.datasource.DollarFirestoreDataSource
 
 import edu.ucb.project.analytics.AnalyticsTracker
+import edu.ucb.project.core.grpc.GrpcConfig
+import edu.ucb.project.logs.data.datasource.LogsRemoteDataSource
+import edu.ucb.project.logs.data.repository.LogsRepositoryImpl
+import edu.ucb.project.logs.data.service.LogsService
+import edu.ucb.project.logs.domain.repository.LogsRepository
 
 import edu.ucb.project.remoteconfig.data.datasource.RemoteConfigDataSource
 import edu.ucb.project.remoteconfig.data.repository.AppConfigRepositoryImpl
@@ -64,6 +69,8 @@ val dataModule = module {
     single<ExchangeRepository> { ExchangeRepositoryImpl(get()) }
     singleOf(::PushTokenProvider)
     singleOf(::AnalyticsTracker)
+    single<LogsRemoteDataSource> { LogsService(GrpcConfig.LOGS_URL) }
+    single<LogsRepository> { LogsRepositoryImpl(get()) }
     singleOf(::DollarFirestoreDataSource) // NUEVO
     singleOf(::PushTokenDataBase)
     singleOf(::RemoteConfigDataSource)

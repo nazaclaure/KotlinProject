@@ -12,6 +12,7 @@ import edu.ucb.project.dollar.domain.usecase.GetDollarListUseCase
 import edu.ucb.project.dollar.domain.usecase.InsertDollarUseCase
 import edu.ucb.project.dollar.domain.usecase.ObserveExchangeUseCase
 import edu.ucb.project.dollar.domain.usecase.SyncDollarUseCase
+import edu.ucb.project.logs.domain.usecase.SendLogsUseCase
 import edu.ucb.project.push.domain.usecase.RefreshPushTokenUseCase // NUEVO
 import edu.ucb.project.remoteconfig.domain.usecase.GetAppConfigUseCase
 import edu.ucb.project.push.domain.usecase.RegisterPushTokenUseCase
@@ -36,6 +37,7 @@ val domainModule = module {
     singleOf(::RefreshPushTokenUseCase) // NUEVO
     singleOf(::GetAppConfigUseCase)
     singleOf(::SyncDollarUseCase)
+    singleOf(::SendLogsUseCase)
 }
 
 //el caso de uso, single porque koin lee constructor y resuleve lo que necesita en repo

@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room3)
+    alias(libs.plugins.wire)
 }
 
 
@@ -79,6 +80,8 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.androidx.room3.runtime)
+            implementation(libs.wire.runtime)
+            implementation(libs.wire.grpc.client)
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.firebase.database)
             implementation(libs.firebase.config)
@@ -101,6 +104,15 @@ dependencies {
 
 room3 {
     schemaDirectory("$projectDir/schemas")
+}
+
+wire {
+    sourcePath {
+        srcDir("src/commonMain/kotlin/proto")
+    }
+    kotlin {
+        rpcRole = "client"
+    }
 }
 
 detekt {
