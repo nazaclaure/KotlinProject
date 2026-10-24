@@ -1,6 +1,7 @@
 package edu.ucb.ds.components.textfields
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -19,6 +20,9 @@ fun DsTextField(
     enabled: Boolean = true,
     isError: Boolean = false,
     singleLine: Boolean = true,
+    leadingIcon: (@Composable () -> Unit)? = null,
+    trailingIcon: (@Composable () -> Unit)? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     OutlinedTextField(
@@ -28,6 +32,9 @@ fun DsTextField(
         enabled = enabled,
         isError = isError,
         singleLine = singleLine,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation,
         label = { Text(text = label, style = DsTheme.typography.body) },
         textStyle = DsTheme.typography.body,

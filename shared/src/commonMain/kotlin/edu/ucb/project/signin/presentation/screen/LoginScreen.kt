@@ -15,14 +15,10 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -40,6 +36,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import edu.ucb.ds.components.buttons.PrimaryButton
+import edu.ucb.ds.components.cards.DsCard
+import edu.ucb.ds.components.labels.DsLabel
+import edu.ucb.ds.components.textfields.DsTextField
+import edu.ucb.ds.theme.DsTheme
 import edu.ucb.project.core.navigation.NavRoute
 import edu.ucb.project.signin.presentation.state.SignInEffects
 import edu.ucb.project.signin.presentation.state.SignInEvents
@@ -80,27 +81,24 @@ fun LoginScreen(
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
-        Text(
+        DsLabel(
             text = stringResource(Res.string.login_subtitle),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        OutlinedTextField(
+        DsTextField(
             value = state.email,
             onValueChange = { viewModel.onEvent(SignInEvents.OnEmailChanged(it)) },
-            label = { Text(stringResource(Res.string.common_email)) },
+            label = stringResource(Res.string.common_email),
             leadingIcon = { Icon(imageVector = Icons.Default.Email, contentDescription = null) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
 
-        OutlinedTextField(
+        DsTextField(
             value = state.pass,
             onValueChange = { viewModel.onEvent(SignInEvents.OnPasswordChanged(it)) },
-            label = { Text(stringResource(Res.string.common_password)) },
+            label = stringResource(Res.string.common_password),
             leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = null) },
             trailingIcon = {
                 IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
@@ -112,38 +110,26 @@ fun LoginScreen(
             },
             visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            singleLine = true,
             modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
         )
 
         if (state.error != null) {
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
-            ) {
-                Text(
+            DsCard(modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
+                DsLabel(
                     text = stringResource(Res.string.common_error, state.error.toString()),
-                    color = MaterialTheme.colorScheme.onErrorContainer,
-                    modifier = Modifier.padding(12.dp)
+                    color = DsTheme.colors.error
                 )
             }
         }
 
-        Button(
-            modifier = Modifier.fillMaxWidth().padding(top = 32.dp),
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 16.dp),
+        PrimaryButton(
+            text = stringResource(Res.string.login_button),
             onClick = { viewModel.onEvent(SignInEvents.OnSubmit) },
-            enabled = !state.isLoading
-        ) {
-            if (state.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.padding(4.dp))
-            } else {
-                Text(
-                    text = stringResource(Res.string.login_button),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+            enabled = !state.isLoading,
+            modifier = Modifier.fillMaxWidth().padding(top = 32.dp)
+        )
+        if (state.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.padding(top = 16.dp))
         }
         TextButton(onClick = { navController.navigate(NavRoute.SignUp) }) {
             Text(stringResource(Res.string.login_no_account))
