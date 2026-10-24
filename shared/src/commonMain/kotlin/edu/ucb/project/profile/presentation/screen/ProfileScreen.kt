@@ -1,6 +1,9 @@
 package edu.ucb.project.profile.presentation.screen
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import edu.ucb.project.core.theme.AppearanceSettings
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -63,7 +66,7 @@ fun ProfileScreen(
             }
             state.profile != null -> {
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(24.dp),
+                    modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     TextButton(onClick = { navController.popBackStack() }) {
@@ -97,6 +100,8 @@ fun ProfileScreen(
                     ) {
                         Text("Buscar en GitHub")
                     }
+
+                    AppearanceSettings()
 
                     Button(
                         onClick = { viewModel.onEvent(ProfileEvents.OnLogout) },

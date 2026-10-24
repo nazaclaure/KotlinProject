@@ -36,6 +36,9 @@ import edu.ucb.project.analytics.AnalyticsTracker
 import edu.ucb.project.core.navigation.NavRoute
 import edu.ucb.project.core.survey.SurveyConfig
 import edu.ucb.project.core.theme.LocalThemeController
+import edu.ucb.project.core.theme.FontSizeChoice
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import edu.ucb.project.core.theme.ThemeChoice
 import edu.ucb.project.movies.presentation.state.MovieEffects
 import edu.ucb.project.movies.presentation.state.MovieEvents
@@ -126,31 +129,6 @@ fun MovieScreen(
             )
             TextButton(onClick = { navController.navigate(NavRoute.Profile) }) {
                 Text("Mi Perfil")
-            }
-        }
-
-        // DESIGN SYSTEM: selector de tema (sistema, claro, oscuro, alto contraste)
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            listOf(
-                ThemeChoice.SYSTEM to "Sistema",
-                ThemeChoice.LIGHT to "Claro",
-                ThemeChoice.DARK to "Oscuro",
-                ThemeChoice.HIGH_CONTRAST to "Contraste"
-            ).forEach { (option, label) ->
-                TextButton(
-                    onClick = { themeController.onChoiceChange(option) },
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(horizontal = 4.dp)
-                ) {
-                    Text(
-                        text = label,
-                        maxLines = 1,
-                        fontWeight = if (themeController.choice == option) FontWeight.Bold else FontWeight.Normal
-                    )
-                }
             }
         }
 
