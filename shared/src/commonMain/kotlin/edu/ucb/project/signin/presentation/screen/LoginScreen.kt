@@ -103,7 +103,7 @@ fun LoginScreen(
                 IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                     Icon(
                         imageVector = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                        contentDescription = null
+                        contentDescription = if (isPasswordVisible) "Ocultar contrase\u00f1a" else "Mostrar contrase\u00f1a"
                     )
                 }
             },
