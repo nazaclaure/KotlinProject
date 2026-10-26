@@ -1,11 +1,11 @@
 # KotlinProject - Examen de Desarrollo Móvil (grupal)
 
 ## Integrantes
-- Celes
-- Naza
-- Majo
-- Ari
-- Vale
+- Nazaret Fabiane Claure Martinez
+- Ariana Aylen Pita Vargas
+- Maria Jose Sandoval Orellana
+- Celeste Limeira Quispe Sarmiento
+- Valery Marcela Lamas Soliz
 
 ## Usuario de prueba
 - Correo: docente@test.com
@@ -16,9 +16,9 @@
 ## Combinación elegida (100 puntos)
 | Ejercicio | Puntos | Responsables |
 |---|---|---|
-| E50-3 FCM externa + notificación local en foreground + token en Firestore | 50 | Celes (token en Firestore), Majo (servicio FCM y notificación), Ari (DetailActivity) |
-| E25-5 Notificaciones internas con NotificationManager | 25 | Naza |
-| E25-1 Remote Config con caché en SharedPreferences | 25 | Vale |
+| E50-3 FCM externa + notificación local en foreground + token en Firestore | 50 | Celeste Limeira (token en Firestore), Maria Jose Sandoval (servicio FCM y notificación), Ariana Pita (DetailActivity) |
+| E25-5 Notificaciones internas con NotificationManager | 25 | Nazaret Claure |
+| E25-1 Remote Config con caché en SharedPreferences | 25 | Valery Lamas |
 
 ## Cómo compilar y ejecutar
 1. Abrir el proyecto en Android Studio, rama `examen-grupal`.
