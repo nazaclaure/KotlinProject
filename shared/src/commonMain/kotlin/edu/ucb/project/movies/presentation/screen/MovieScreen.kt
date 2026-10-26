@@ -35,8 +35,10 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import edu.ucb.ds.components.buttons.PrimaryButton
 import edu.ucb.project.analytics.AnalyticsTracker
 import edu.ucb.project.core.navigation.NavRoute
+import edu.ucb.project.core.notifications.LocalNotifier
 import edu.ucb.project.core.survey.SurveyConfig
 import edu.ucb.project.core.theme.LocalThemeController
 import edu.ucb.project.core.theme.FontSizeChoice
@@ -62,6 +64,10 @@ fun MovieScreen(
     val state by viewModel.uiState.collectAsState()
     val themeController = LocalThemeController.current
     val uriHandler = LocalUriHandler.current
+
+    // Textos de la notificacion local (traducidos segun el idioma)
+    val notifyTitle = stringResource(Res.string.notify_title)
+    val notifyText = stringResource(Res.string.notify_text)
 
     // REMOTE CONFIG: valores remotos (mensaje de bienvenida y promo)
     var config by remember { mutableStateOf(AppConfig.DEFAULT) }
@@ -140,6 +146,13 @@ fun MovieScreen(
             text = config.mensajeBienvenida,
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        )
+
+        // E25-5: boton que dispara una notificacion local
+        PrimaryButton(
+            text = stringResource(Res.string.movies_notify),
+            onClick = { LocalNotifier.show(notifyTitle, notifyText) },
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
         )
 
         // Promo: solo se muestra si Remote Config lo activa
@@ -231,5 +244,3 @@ fun MovieScreen(
         }
     }
 }
-
-//el boton para acceder a clima, estan aqui la mayoria de botones

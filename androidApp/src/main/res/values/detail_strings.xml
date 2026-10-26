@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="detail_title">Detalle del mensaje</string>
+    <string name="detail_message_id_label">ID del mensaje</string>
+    <string name="detail_no_id">Sin id</string>
+    <string name="detail_back">Volver</string>
+</resources>
