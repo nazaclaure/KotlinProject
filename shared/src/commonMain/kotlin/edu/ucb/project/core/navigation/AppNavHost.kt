@@ -14,40 +14,67 @@ import edu.ucb.project.userinformation.presentation.screen.UserInformationScreen
 import edu.ucb.project.catalog.presentation.screen.CatalogScreen
 import edu.ucb.project.weather.presentation.screen.WeatherScreen
 import edu.ucb.project.dollar.presentation.screen.DollarScreen
+import edu.ucb.project.dollar.presentation.screen.ExchangeScreen
+import edu.ucb.project.remoteconfig.presentation.screen.ConfigScreen
 
 @Composable
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = NavRoute.Login) {
+    NavHost(
+        navController = navController,
+        startDestination = NavRoute.Login
+    ) {
+
         composable<NavRoute.Login> {
             LoginScreen(navController = navController)
         }
+
         composable<NavRoute.SignUp> {
             SignUpScreen(navController = navController)
         }
+
         composable<NavRoute.Movies> {
             MovieScreen(navController = navController)
         }
+
         composable<NavRoute.MovieDetail> { backStackEntry ->
             val route: NavRoute.MovieDetail = backStackEntry.toRoute()
-            MovieDetailScreen(movieId = route.movieId, navController = navController)
+
+            MovieDetailScreen(
+                movieId = route.movieId,
+                navController = navController
+            )
         }
+
         composable<NavRoute.Profile> {
             ProfileScreen(navController = navController)
         }
+
         composable<NavRoute.UserInformation> {
             UserInformationScreen(navController = navController)
         }
+
         composable<NavRoute.Catalog> {
             CatalogScreen(navController = navController)
         }
+
         composable<NavRoute.Weather> {
             WeatherScreen(navController = navController)
         }
+
         composable<NavRoute.Dollar> {
             DollarScreen(navController = navController)
         }
+
+        composable<NavRoute.Exchange> {
+            ExchangeScreen(navController = navController)
+        }
+
+        composable<NavRoute.Config> {
+            ConfigScreen()
+        }
     }
 }
-//conecta nav route con su composable, ruta con pantalla
+
+// conecta cada ruta con su pantalla

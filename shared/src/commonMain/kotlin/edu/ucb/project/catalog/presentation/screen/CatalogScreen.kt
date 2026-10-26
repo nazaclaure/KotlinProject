@@ -1,5 +1,8 @@
 package edu.ucb.project.catalog.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -38,7 +41,7 @@ fun CatalogScreen(navController: NavHostController, viewModel: CatalogVM = koinV
 
     Column(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
         TextButton(onClick = { navController.popBackStack() }) {
-            Text("< Volver")
+            Text(stringResource(Res.string.common_back))
         }
         Box(modifier = Modifier.weight(1f)) {
             when {
@@ -47,7 +50,7 @@ fun CatalogScreen(navController: NavHostController, viewModel: CatalogVM = koinV
                 }
                 state.error != null -> {
                     Text(
-                        text = "Error: ${state.error}",
+                        text = stringResource(Res.string.common_error, state.error.toString()),
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }

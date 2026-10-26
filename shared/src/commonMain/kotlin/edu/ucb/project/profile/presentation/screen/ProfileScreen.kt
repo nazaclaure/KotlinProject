@@ -1,6 +1,12 @@
 package edu.ucb.project.profile.presentation.screen
 
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
+
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import edu.ucb.project.core.theme.AppearanceSettings
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,6 +45,7 @@ fun ProfileScreen(
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(ProfileEvents.LoadProfile)
+
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is ProfileEffects.NavigateToLogin -> {
@@ -50,29 +57,55 @@ fun ProfileScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
         when {
             state.isLoading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-            state.error != null -> {
-                Text(
-                    text = "Error: ${state.error}",
+                CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
+
+            state.error != null -> {
+                Text(
+                    text = stringResource(
+                        Res.string.common_error,
+                        state.error.toString()
+                    ),
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+
             state.profile != null -> {
                 Column(
-                    modifier = Modifier.fillMaxSize().padding(24.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    TextButton(onClick = { navController.popBackStack() }) {
-                        Text("< Volver")
+
+                    TextButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Text(
+                            stringResource(
+                                Res.string.common_back
+                            )
+                        )
                     }
 
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                        colors = CardDefaults.cardColors(
+                            containerColor =
+                                MaterialTheme.colorScheme.surfaceVariant
+                        )
                     ) {
                         Column(
                             modifier = Modifier.padding(20.dp),
@@ -80,29 +113,62 @@ fun ProfileScreen(
                         ) {
                             Text(
                                 text = state.profile!!.name,
-                                style = MaterialTheme.typography.headlineSmall,
+                                style =
+                                    MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold
                             )
+
                             Text(
                                 text = state.profile!!.email,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                style =
+                                    MaterialTheme.typography.bodyMedium,
+                                color =
+                                    MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
 
                     OutlinedButton(
-                        onClick = { navController.navigate(NavRoute.UserInformation) },
+                        onClick = {
+                            navController.navigate(
+                                NavRoute.UserInformation
+                            )
+                        },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Buscar en GitHub")
+                        Text(
+                            stringResource(
+                                Res.string.profile_github
+                            )
+                        )
                     }
 
-                    Button(
-                        onClick = { viewModel.onEvent(ProfileEvents.OnLogout) },
+                    OutlinedButton(
+                        onClick = {
+                            navController.navigate(
+                                NavRoute.Config
+                            )
+                        },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Cerrar Sesión")
+                        Text("Configuración remota")
+                    }
+
+                    AppearanceSettings()
+
+                    Button(
+                        onClick = {
+                            viewModel.onEvent(
+                                ProfileEvents.OnLogout
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(
+                            stringResource(
+                                Res.string.profile_logout
+                            )
+                        )
                     }
                 }
             }

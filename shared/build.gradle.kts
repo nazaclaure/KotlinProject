@@ -1,4 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.zip.ZipInputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -9,6 +12,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room3)
+    alias(libs.plugins.wire)
 }
 
 
@@ -29,7 +33,7 @@ kotlin {
         minSdk = libs.versions.android.minSdk.get().toInt()
 
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
+            jvmTarget = JvmTarget.JVM_17
         }
         androidResources {
             enable = true
@@ -51,6 +55,10 @@ kotlin {
             implementation(libs.compose.uiTooling)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.room3.sqlite.wrapper)
+            implementation(libs.androidx.work.runtime.ktx)
+            implementation(project.dependencies.platform("com.google.firebase:firebase-bom:34.0.0"))
+            implementation("com.google.firebase:firebase-messaging")
+            implementation("com.google.firebase:firebase-analytics")
         }
         commonMain.dependencies {
             implementation(libs.koin.core)
@@ -73,7 +81,13 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.androidx.room3.runtime)
+            implementation(libs.wire.runtime)
+            implementation(libs.wire.grpc.client)
             implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.firebase.database)
+            implementation(libs.firebase.config)
+            implementation(libs.firebase.firestore)
+            implementation("edu.ucb.ds:shared:1.0.0-SNAPSHOT")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -93,6 +107,15 @@ room3 {
     schemaDirectory("$projectDir/schemas")
 }
 
+wire {
+    sourcePath {
+        srcDir("src/commonMain/kotlin/proto")
+    }
+    kotlin {
+        rpcRole = "client"
+    }
+}
+
 detekt {
     ignoreFailures = true
     buildUponDefaultConfig = true
@@ -103,4 +126,81 @@ detekt {
         "src/androidMain/kotlin",
         "src/iosMain/kotlin"
     )
+}
+
+val locoApiKey = providers.gradleProperty("LOCO_API_KEY").orElse("")
+
+tasks.register("downloadLocaliseTranslations") {
+    group = "localization"
+    description = "Descarga las traducciones desde Loco y las ubica en composeResources"
+
+    notCompatibleWithConfigurationCache("Descarga externa desde la API de Loco")
+
+    doLast {
+        val apiKey = locoApiKey.get().trim()
+
+        if (apiKey.isEmpty() || apiKey.startsWith("TU_API")) {
+            throw GradleException("Configura LOCO_API_KEY en tu gradle.properties.")
+        }
+
+        println("Iniciando descarga de traducciones desde Loco (localise.biz)...")
+
+        val url = URL("https://localise.biz/api/export/archive/xml.zip?key=$apiKey")
+        val connection = (url.openConnection() as HttpURLConnection).apply {
+            requestMethod = "GET"
+        }
+
+        val responseCode = connection.responseCode
+        if (responseCode == 200) {
+            val outputZip = layout.buildDirectory.file("translations.zip").get().asFile
+            val tempExtractDir = layout.buildDirectory.dir("temp_translations").get().asFile
+            val targetDir = projectDir.resolve("src/commonMain/composeResources")
+
+            // 1. Descargar el ZIP
+            outputZip.parentFile.mkdirs()
+            connection.inputStream.use { input ->
+                outputZip.outputStream().use { output -> input.copyTo(output) }
+            }
+
+            // 2. Limpiar carpeta temporal anterior
+            if (tempExtractDir.exists()) tempExtractDir.deleteRecursively()
+            tempExtractDir.mkdirs()
+
+            // 3. Descomprimir
+            ZipInputStream(outputZip.inputStream()).use { zis ->
+                var entry = zis.nextEntry
+                while (entry != null) {
+                    val newFile = File(tempExtractDir, entry.name)
+                    if (entry.isDirectory) {
+                        newFile.mkdirs()
+                    } else {
+                        newFile.parentFile?.mkdirs()
+                        newFile.outputStream().use { fos -> zis.copyTo(fos) }
+                    }
+                    zis.closeEntry()
+                    entry = zis.nextEntry
+                }
+            }
+
+            // 4. Copiar las carpetas values* a composeResources
+            val foundValuesDir = tempExtractDir.walkTopDown()
+                .find { it.isDirectory && it.name.startsWith("values") }?.parentFile
+                ?: tempExtractDir
+
+            foundValuesDir.listFiles()?.forEach { file ->
+                if (file.isDirectory && file.name.startsWith("values")) {
+                    val destination = File(targetDir, file.name)
+                    destination.deleteRecursively()
+                    file.copyRecursively(destination, overwrite = true)
+                    println("Copiado idioma: ${file.name} -> ${destination.absolutePath}")
+                }
+            }
+
+            tempExtractDir.deleteRecursively()
+            println("Traducciones organizadas con exito en ${targetDir.absolutePath}")
+        } else {
+            val errorResponse = connection.errorStream?.bufferedReader()?.readText() ?: "Error desconocido"
+            throw GradleException("Error al conectar con Loco ($responseCode): $errorResponse")
+        }
+    }
 }
