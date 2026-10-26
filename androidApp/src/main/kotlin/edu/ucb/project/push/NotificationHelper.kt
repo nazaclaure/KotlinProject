@@ -13,6 +13,9 @@ object NotificationHelper {
 
     const val CHANNEL_ID = "notificaciones_generales"
 
+    // Nombre del extra acordado con Ari para DetailActivity
+    const val EXTRA_MESSAGE_ID = "message_id"
+
     // Crea el canal de notificaciones con importancia alta (cartel en pantalla)
     fun crearCanal(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -28,15 +31,19 @@ object NotificationHelper {
         }
     }
 
-    // Muestra una notificación local con titulo y contenido
-    fun mostrar(context: Context, titulo: String, contenido: String) {
+    // Muestra una notificación local; al tocarla abre DetailActivity con el message_id
+    fun mostrar(context: Context, titulo: String, contenido: String, messageId: String? = null) {
         crearCanal(context)
 
+        // Id distinto por notificación: así no se pisan entre sí ni sus PendingIntent
+        val idNotificacion = messageId?.hashCode() ?: System.currentTimeMillis().toInt()
+
         val intent = Intent(context, MainActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE_ID, messageId)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
         val pendingIntent = PendingIntent.getActivity(
-            context, 0, intent,
+            context, idNotificacion, intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
@@ -56,6 +63,6 @@ object NotificationHelper {
             .build()
 
         context.getSystemService(NotificationManager::class.java)
-            .notify(System.currentTimeMillis().toInt(), notificacion)
+            .notify(idNotificacion, notificacion)
     }
 }
