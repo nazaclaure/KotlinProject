@@ -44,6 +44,7 @@ import edu.ucb.project.dollar.data.repository.ExchangeRepositoryImpl
 import edu.ucb.project.dollar.domain.repository.DollarRepository
 import edu.ucb.project.dollar.domain.repository.ExchangeRepository
 import edu.ucb.project.push.data.datasource.PushTokenDataBase // NUEVO
+import edu.ucb.project.push.data.datasource.PushTokenFirestoreDataSource
 import edu.ucb.project.push.data.provider.PushTokenProvider // NUEVO
 import edu.ucb.project.push.data.repository.PushTokenRepositoryImpl // NUEVO
 import edu.ucb.project.push.domain.repository.PushTokenRepository // NUEVO
@@ -73,9 +74,10 @@ val dataModule = module {
     single<LogsRepository> { LogsRepositoryImpl(get()) }
     singleOf(::DollarFirestoreDataSource) // NUEVO
     singleOf(::PushTokenDataBase)
+    singleOf(::PushTokenFirestoreDataSource)
     singleOf(::RemoteConfigDataSource)
     single<AppConfigRepository> { AppConfigRepositoryImpl(get()) } // NUEVO
-    single<PushTokenRepository> { PushTokenRepositoryImpl(get(), get()) } // NUEVO
+    single<PushTokenRepository> { PushTokenRepositoryImpl(get(), get(), get()) } // NUEVO
 }
 
 //implementaciones en la capa de datos, single porque lo hacemos manual interfaz aountada a su impl
