@@ -45,6 +45,7 @@ fun ProfileScreen(
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(ProfileEvents.LoadProfile)
+
         viewModel.uiEffect.collect { effect ->
             when (effect) {
                 is ProfileEffects.NavigateToLogin -> {
@@ -56,29 +57,55 @@ fun ProfileScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
         when {
             state.isLoading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-            state.error != null -> {
-                Text(
-                    text = stringResource(Res.string.common_error, state.error.toString()),
+                CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
+
+            state.error != null -> {
+                Text(
+                    text = stringResource(
+                        Res.string.common_error,
+                        state.error.toString()
+                    ),
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+
             state.profile != null -> {
                 Column(
-                    modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    TextButton(onClick = { navController.popBackStack() }) {
-                        Text(stringResource(Res.string.common_back))
+
+                    TextButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Text(
+                            stringResource(
+                                Res.string.common_back
+                            )
+                        )
                     }
 
                     Card(
                         modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                        colors = CardDefaults.cardColors(
+                            containerColor =
+                                MaterialTheme.colorScheme.surfaceVariant
+                        )
                     ) {
                         Column(
                             modifier = Modifier.padding(20.dp),
@@ -86,31 +113,62 @@ fun ProfileScreen(
                         ) {
                             Text(
                                 text = state.profile!!.name,
-                                style = MaterialTheme.typography.headlineSmall,
+                                style =
+                                    MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold
                             )
+
                             Text(
                                 text = state.profile!!.email,
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                style =
+                                    MaterialTheme.typography.bodyMedium,
+                                color =
+                                    MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
 
                     OutlinedButton(
-                        onClick = { navController.navigate(NavRoute.UserInformation) },
+                        onClick = {
+                            navController.navigate(
+                                NavRoute.UserInformation
+                            )
+                        },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(stringResource(Res.string.profile_github))
+                        Text(
+                            stringResource(
+                                Res.string.profile_github
+                            )
+                        )
+                    }
+
+                    OutlinedButton(
+                        onClick = {
+                            navController.navigate(
+                                NavRoute.Config
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Configuración remota")
                     }
 
                     AppearanceSettings()
 
                     Button(
-                        onClick = { viewModel.onEvent(ProfileEvents.OnLogout) },
+                        onClick = {
+                            viewModel.onEvent(
+                                ProfileEvents.OnLogout
+                            )
+                        },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(stringResource(Res.string.profile_logout))
+                        Text(
+                            stringResource(
+                                Res.string.profile_logout
+                            )
+                        )
                     }
                 }
             }
