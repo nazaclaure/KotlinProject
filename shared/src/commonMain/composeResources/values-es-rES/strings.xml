@@ -58,4 +58,7 @@
     <string name="dollar_live_firebase">D&#243;lar en vivo (Firebase)</string>
     <string name="dollar_official_value">Oficial: %1$s</string>
     <string name="dollar_parallel_value">Paralelo: %1$s</string>
+    <string name="movies_notify">Probar notificaci&#243;n</string>
+    <string name="notify_title">Notificaci&#243;n local</string>
+    <string name="notify_text">Hola desde la app</string>
 </resources>

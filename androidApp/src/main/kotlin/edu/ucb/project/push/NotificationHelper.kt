@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import edu.ucb.project.MainActivity
+import edu.ucb.project.R
 
 object NotificationHelper {
 
@@ -21,14 +22,14 @@ object NotificationHelper {
                 "Notificaciones generales",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "Notificaciones push de la aplicación"
+                description = "Notificaciones de la aplicacion"
             }
             context.getSystemService(NotificationManager::class.java)
                 .createNotificationChannel(canal)
         }
     }
 
-    // Muestra una notificación local con titulo y contenido
+    // Muestra una notificacion local con titulo y contenido
     fun mostrar(context: Context, titulo: String, contenido: String) {
         crearCanal(context)
 
@@ -48,7 +49,7 @@ object NotificationHelper {
         }
 
         val notificacion = builder
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(titulo)
             .setContentText(contenido)
             .setContentIntent(pendingIntent)

@@ -1,42 +1,42 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# KotlinProject - Examen de Desarrollo Móvil (grupal)
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+## Integrantes
+- Celes
+- Naza
+- Majo
+- Ari
+- Vale
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+## Usuario de prueba
+- Correo: docente@test.com
+- Contraseña: Docente2026
 
-### Running the apps
+(Cuenta creada solo para la revisión del examen.)
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+## Combinación elegida (100 puntos)
+| Ejercicio | Puntos | Responsables |
+|---|---|---|
+| E50-3 FCM externa + notificación local en foreground + token en Firestore | 50 | Celes (token en Firestore), Majo (servicio FCM y notificación), Ari (DetailActivity) |
+| E25-5 Notificaciones internas con NotificationManager | 25 | Naza |
+| E25-1 Remote Config con caché en SharedPreferences | 25 | Vale |
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+## Cómo compilar y ejecutar
+1. Abrir el proyecto en Android Studio, rama `examen-grupal`.
+2. Elegir la variante `dev` y ejecutar `androidApp` en un emulador o celular con Android 13 o superior.
+3. Por consola: `.\gradlew :androidApp:assembleDevDebug`. El APK queda en `androidApp\build\outputs\apk`.
+4. Firebase: el archivo `androidApp/google-services.json` ya está en el repositorio (proyecto `kotlinproject-69db0`).
+5. Iniciar sesión con el usuario de prueba de la sección anterior.
 
-### Running tests
+## Cómo probar cada ejercicio
+**E25-5 (notificación local):** iniciar sesión, en la pantalla de películas tocar "Probar notificación", aceptar el permiso, ver la notificación en la bandeja y tocarla para abrir la app.
 
-Use the run button in your IDE's editor gutter, or run tests using Gradle tasks:
+**E25-1 (Remote Config):** abrir la pantalla de configuración y ver los 3 valores (`welcome_message`, `max_items`, `feature_enabled`). Cambiar un valor en la consola de Firebase, publicar y tocar "Refrescar". Con modo avión, reiniciar la app y ver los valores guardados con el badge "offline".
 
-- Android tests: `./gradlew :shared:testAndroidHostTest`
-- iOS tests: `./gradlew :shared:iosSimulatorArm64Test`
+**E50-3 (FCM):** iniciar sesión y verificar en Firestore `usuarios/{uid}/token`. Enviar un mensaje de prueba desde la consola de Firebase (Messaging) con el dato `message_id`: con la app abierta aparece una notificación local; con la app cerrada, la del sistema. Al tocarla se abre `DetailActivity` con el `message_id`.
 
----
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
-
-## Acceso de prueba
-
-El login es simulado (mock) acepta cualquier correo con formato válido y cualquier contraseña, no valida contra un backend real.
-
-**Usuario de ejemplo:**
-- Email: profesor@ucb.edu.bo
-- Contraseña: 123456
-
-**Flujo para llegar a la pantalla de Clima:**
-Login → Movies → botón "Ver Clima"
+## Decisiones técnicas
+- Kotlin Multiplatform con Compose, Koin y arquitectura limpia (dominio, datos, presentación).
+- Los componentes visuales vienen del Design System propio (`edu.ucb.ds`).
+- Textos en español e inglés con recursos de Compose Multiplatform.
+- Notificaciones locales: el código común usa un puente (`LocalNotifier`) y Android lo implementa con `NotificationHelper`.
+- Cada integrante trabajó en su propia rama (`examen/<nombre>-...`) y se juntaron en `examen-grupal`.
