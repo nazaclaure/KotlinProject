@@ -32,7 +32,7 @@
 
 **E25-1 (Remote Config):** abrir la pantalla de configuración y ver los 3 valores (`welcome_message`, `max_items`, `feature_enabled`). Cambiar un valor en la consola de Firebase, publicar y tocar "Refrescar". Con modo avión, reiniciar la app y ver los valores guardados con el badge "offline".
 
-**E50-3 (FCM):** iniciar sesión y verificar en Firestore `usuarios/{uid}/token`. Enviar un mensaje de prueba desde la consola de Firebase (Messaging) con el dato `message_id`: con la app abierta aparece una notificación local; con la app cerrada, la del sistema. Al tocarla se abre `DetailActivity` con el `message_id`.
+**E50-3 (FCM):** iniciar sesión y verificar en Firestore `usuarios/<id de usuario>/token (campos: token, email, platform)`. Enviar un mensaje de prueba desde la consola de Firebase (Messaging) con el dato `message_id`: con la app abierta aparece una notificación local; con la app cerrada, la del sistema. Al tocarla se abre `DetailActivity` con el `message_id`.
 
 ## Decisiones técnicas
 - Kotlin Multiplatform con Compose, Koin y arquitectura limpia (dominio, datos, presentación).
