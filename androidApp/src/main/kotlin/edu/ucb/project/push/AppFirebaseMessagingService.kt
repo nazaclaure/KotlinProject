@@ -24,7 +24,9 @@ class AppFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
         scope.launch { refreshPushToken(token) }
     }
 
-    // Llega un mensaje con la app abierta
+    // Se ejecuta SIEMPRE con la app en foreground.
+    // En background solo se ejecuta si el mensaje es de tipo "data";
+    // si trae "notification", Android muestra la notificacion por su cuenta.
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
 
@@ -34,9 +36,12 @@ class AppFirebaseMessagingService : FirebaseMessagingService(), KoinComponent {
         val contenido = message.notification?.body
             ?: message.data["contenido"]
             ?: ""
+        // Prioridad: dato "message_id" del payload; si no viene, el id propio del mensaje FCM
+        val messageId = message.data[NotificationHelper.EXTRA_MESSAGE_ID]
+            ?: message.messageId
 
-        Log.d(TAG, "Mensaje recibido: $titulo - $contenido")
-        NotificationHelper.mostrar(this, titulo, contenido)
+        Log.d(TAG, "Mensaje recibido [$messageId]: $titulo - $contenido")
+        NotificationHelper.mostrar(this, titulo, contenido, messageId)
     }
 
     override fun onDestroy() {

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.firebase.messaging.FirebaseMessaging
 import edu.ucb.project.push.NotificationHelper
+import edu.ucb.project.push.NotificationHelper.EXTRA_MESSAGE_ID
 
 class MainActivity : ComponentActivity() {
 
@@ -41,6 +43,26 @@ class MainActivity : ComponentActivity() {
         setContent {
             App()
         }
+
+        // Solo la primera vez que se crea (no al rotar la pantalla)
+        if (savedInstanceState == null) {
+            abrirDetalleSiVieneDePush(intent)
+        }
+    }
+
+    // Si MainActivity ya estaba abierta, el nuevo Intent llega aqui
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        abrirDetalleSiVieneDePush(intent)
+    }
+
+    // Push en background: el sistema abre MainActivity con los datos del payload como extras
+    private fun abrirDetalleSiVieneDePush(intent: Intent?) {
+        val messageId = intent?.getStringExtra(EXTRA_MESSAGE_ID)
+            ?: intent?.getStringExtra("google.message_id")
+            ?: return
+        Log.d(TAG, "Push tocado en background, abriendo detalle: $messageId")
+        startActivity(Intent(this, DetailActivity::class.java).putExtra(EXTRA_MESSAGE_ID, messageId))
     }
 
     private fun pedirPermisoNotificaciones() {

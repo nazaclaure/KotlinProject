@@ -7,12 +7,16 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import edu.ucb.project.DetailActivity
 import edu.ucb.project.MainActivity
 import edu.ucb.project.R
 
 object NotificationHelper {
 
     const val CHANNEL_ID = "notificaciones_generales"
+
+    // Nombre del extra acordado con Ari para DetailActivity
+    const val EXTRA_MESSAGE_ID = DetailActivity.EXTRA_MESSAGE_ID
 
     // Crea el canal de notificaciones con importancia alta (cartel en pantalla)
     fun crearCanal(context: Context) {
@@ -29,15 +33,26 @@ object NotificationHelper {
         }
     }
 
-    // Muestra una notificacion local con titulo y contenido
-    fun mostrar(context: Context, titulo: String, contenido: String) {
+    // Muestra una notificacion local con titulo y contenido.
+    // Con messageId (push FCM) abre DetailActivity; sin messageId (notificacion local) vuelve a la pantalla actual.
+    fun mostrar(context: Context, titulo: String, contenido: String, messageId: String? = null) {
         crearCanal(context)
 
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        // Id distinto por notificacion: asi no se pisan entre si ni sus PendingIntent
+        val idNotificacion = messageId?.hashCode() ?: System.currentTimeMillis().toInt()
+
+        val intent = if (messageId != null) {
+            Intent(context, DetailActivity::class.java).apply {
+                putExtra(EXTRA_MESSAGE_ID, messageId)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+        } else {
+            Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
         }
         val pendingIntent = PendingIntent.getActivity(
-            context, 0, intent,
+            context, idNotificacion, intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
@@ -57,6 +72,6 @@ object NotificationHelper {
             .build()
 
         context.getSystemService(NotificationManager::class.java)
-            .notify(System.currentTimeMillis().toInt(), notificacion)
+            .notify(idNotificacion, notificacion)
     }
 }
