@@ -2,13 +2,20 @@ package edu.ucb.project.remoteconfig.domain.model
 
 data class AppConfig(
     val mensajeBienvenida: String,
-    val mostrarPromo: Boolean
+    val mostrarPromo: Boolean,
+
+    val welcomeMessage: String,
+    val maxItems: Long,
+    val featureEnabled: Boolean
 ) {
     companion object {
-        // Valores por defecto si Firebase no responde
         val DEFAULT = AppConfig(
             mensajeBienvenida = "Bienvenido",
-            mostrarPromo = false
+            mostrarPromo = false,
+
+            welcomeMessage = "Bienvenido",
+            maxItems = 10,
+            featureEnabled = false
         )
     }
 }
