@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Tema que se ve SOLO mientras abre la app (el splash) -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#1E3A8A</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.App.Main</item>
+    </style>
+
+    <!-- Tema normal de la app, se aplica cuando termina el splash -->
+    <style name="Theme.App.Main" parent="@android:style/Theme.Material.Light.NoActionBar" />
+
+</resources>

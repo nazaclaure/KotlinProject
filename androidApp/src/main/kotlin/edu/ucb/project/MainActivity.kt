@@ -8,6 +8,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -16,11 +18,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.messaging.FirebaseMessaging
 import edu.ucb.project.push.NotificationHelper
 import edu.ucb.project.push.NotificationHelper.EXTRA_MESSAGE_ID
 
 class MainActivity : ComponentActivity() {
+
+    // SPLASH: mientras sea true, el splash se queda en pantalla
+    private var mantenerSplash = true
 
     // Pide el permiso de notificaciones (obligatorio desde Android 13)
     private val permisoNotificaciones =
@@ -29,6 +35,32 @@ class MainActivity : ComponentActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // SPLASH: debe ir ANTES de super.onCreate. Cambia el tema Starting por el tema normal
+        val splashScreen = installSplashScreen()
+
+        // SPLASH: lo mantiene 1.2 segundos para que se alcance a ver (solo al abrir la app)
+        splashScreen.setKeepOnScreenCondition { mantenerSplash }
+        if (savedInstanceState == null) {
+            Handler(Looper.getMainLooper()).postDelayed({ mantenerSplash = false }, 1200)
+        } else {
+            mantenerSplash = false
+        }
+
+        // SPLASH: animacion de salida -> el icono crece y toda la pantalla se desvanece
+        splashScreen.setOnExitAnimationListener { splashProvider ->
+            splashProvider.iconView.animate()
+                .scaleX(1.6f)
+                .scaleY(1.6f)
+                .setDuration(500L)
+                .start()
+
+            splashProvider.view.animate()
+                .alpha(0f)
+                .setDuration(500L)
+                .withEndAction { splashProvider.remove() }
+                .start()
+        }
+
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 

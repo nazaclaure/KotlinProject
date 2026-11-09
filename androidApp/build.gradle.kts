@@ -24,6 +24,9 @@ dependencies {
     // Firebase Cloud Messaging (notificaciones push)
     implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
     implementation("com.google.firebase:firebase-messaging")
+
+    // Splash screen oficial (funciona igual en Android 12+ y en versiones anteriores)
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }
 
 android {
