@@ -1,5 +1,9 @@
 package edu.ucb.project.core.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,6 +20,10 @@ import edu.ucb.project.weather.presentation.screen.WeatherScreen
 import edu.ucb.project.dollar.presentation.screen.DollarScreen
 import edu.ucb.project.dollar.presentation.screen.ExchangeScreen
 import edu.ucb.project.remoteconfig.presentation.screen.ConfigScreen
+import edu.ucb.project.animations.presentation.screen.AnimationsScreen
+
+// Duracion de todas las transiciones (en milisegundos)
+private const val DURACION_TRANSICION = 400
 
 @Composable
 fun AppNavHost() {
@@ -23,7 +31,39 @@ fun AppNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = NavRoute.Login
+        startDestination = NavRoute.Login,
+
+        // Al ir a una pantalla nueva: entra desde la derecha con fundido
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(DURACION_TRANSICION)
+            ) + fadeIn(animationSpec = tween(DURACION_TRANSICION))
+        },
+
+        // La pantalla que se queda atras se va hacia la izquierda
+        exitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Left,
+                animationSpec = tween(DURACION_TRANSICION)
+            ) + fadeOut(animationSpec = tween(DURACION_TRANSICION))
+        },
+
+        // Al volver atras: la pantalla anterior entra desde la izquierda
+        popEnterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(DURACION_TRANSICION)
+            ) + fadeIn(animationSpec = tween(DURACION_TRANSICION))
+        },
+
+        // Al volver atras: la pantalla actual sale hacia la derecha
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Right,
+                animationSpec = tween(DURACION_TRANSICION)
+            ) + fadeOut(animationSpec = tween(DURACION_TRANSICION))
+        }
     ) {
 
         composable<NavRoute.Login> {
@@ -73,6 +113,10 @@ fun AppNavHost() {
 
         composable<NavRoute.Config> {
             ConfigScreen()
+        }
+
+        composable<NavRoute.Animations> {
+            AnimationsScreen(navController = navController)
         }
     }
 }

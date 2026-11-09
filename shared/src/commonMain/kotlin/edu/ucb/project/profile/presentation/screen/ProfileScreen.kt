@@ -151,7 +151,18 @@ fun ProfileScreen(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Configuración remota")
+                        Text("Configuraci\u00f3n remota")
+                    }
+
+                    OutlinedButton(
+                        onClick = {
+                            navController.navigate(
+                                NavRoute.Animations
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Animaciones")
                     }
 
                     AppearanceSettings()

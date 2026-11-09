@@ -36,6 +36,9 @@ sealed class NavRoute {
 
     @Serializable
     object Config : NavRoute()
+
+    @Serializable
+    object Animations : NavRoute()
 }
 
 //define rutas, pantallas, sealed porque es objeto no data class, serial.. para navegacion segura verificando que exista ruta
