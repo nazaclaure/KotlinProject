@@ -2,6 +2,7 @@ package edu.ucb.project.animations.presentation.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -11,14 +12,17 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,6 +31,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -73,6 +78,12 @@ fun AnimationsScreen(navController: NavHostController) {
 
         // Animacion 5: lista escalonada
         ListaSection()
+
+        // Animacion 6: tarjeta que se expande
+        TarjetaSection()
+
+        // Animacion 7: progreso animado
+        ProgresoSection()
     }
 }
 
@@ -241,6 +252,103 @@ private fun ListaSection() {
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TarjetaSection() {
+    // Estado: la tarjeta esta abierta o cerrada
+    var expandida by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            // animateContentSize anima el cambio de tamano cuando el contenido cambia
+            .animateContentSize()
+            .clickable { expandida = !expandida }
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "6. Tarjeta que se expande",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Toca la tarjeta para ver mas o ver menos.",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            // Solo se muestra cuando la tarjeta esta expandida
+            if (expandida) {
+                Text(
+                    text = "Este es el texto completo. Cuando tocas la tarjeta, " +
+                        "su tamano cambia y Compose lo anima solo: la tarjeta " +
+                        "crece suavemente en vez de saltar de golpe. Es lo mismo " +
+                        "que pasa en el ver mas de Facebook o Instagram.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Text(
+                text = if (expandida) "Ver menos" else "Ver mas",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProgresoSection() {
+    // Estado: la descarga esta completa o vacia
+    var completa by remember { mutableStateOf(false) }
+
+    // Numero de 0 a 1 que Compose va moviendo solo durante 3 segundos
+    val progreso by animateFloatAsState(
+        targetValue = if (completa) 1f else 0f,
+        animationSpec = tween(durationMillis = 3000),
+        label = "progreso"
+    )
+
+    // El mismo numero, pero de 0 a 100 para mostrarlo como porcentaje
+    val porcentaje = (progreso * 100).toInt()
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "7. Progreso animado",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "El circulo se llena y el numero sube, como una descarga.",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Box(contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(
+                    progress = { progreso },
+                    modifier = Modifier.size(120.dp),
+                    strokeWidth = 10.dp
+                )
+                Text(
+                    text = "$porcentaje%",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Button(onClick = { completa = !completa }) {
+                Text(if (completa) "Reiniciar" else "Descargar")
             }
         }
     }
