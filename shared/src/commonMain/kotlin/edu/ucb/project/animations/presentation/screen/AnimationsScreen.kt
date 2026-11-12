@@ -3,8 +3,13 @@ package edu.ucb.project.animations.presentation.screen
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -12,6 +17,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -21,13 +27,17 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -35,20 +45,28 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun AnimationsScreen(navController: NavHostController) {
@@ -84,6 +102,9 @@ fun AnimationsScreen(navController: NavHostController) {
 
         // Animacion 7: progreso animado
         ProgresoSection()
+
+        // Animacion 8: brillo de carga (skeleton)
+        SkeletonSection()
     }
 }
 
@@ -350,6 +371,224 @@ private fun ProgresoSection() {
             Button(onClick = { completa = !completa }) {
                 Text(if (completa) "Reiniciar" else "Descargar")
             }
+        }
+    }
+}
+
+@Composable
+private fun SkeletonSection() {
+    // Estado: mostrando el esqueleto (cargando) o el contenido real
+    var cargando by remember { mutableStateOf(true) }
+    val scope = rememberCoroutineScope()
+
+    // Al abrir la pantalla tambien simula una carga de 3 segundos
+    LaunchedEffect(Unit) {
+        delay(3000)
+        cargando = false
+    }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "8. Brillo de carga (skeleton)",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Mientras cargan los datos se ven rectangulos grises con una luz que pasa.",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            if (cargando) {
+                PerfilEsqueleto()
+            } else {
+                PerfilReal()
+            }
+
+            Button(
+                onClick = {
+                    scope.launch {
+                        cargando = true
+                        delay(3000)
+                        cargando = false
+                    }
+                }
+            ) {
+                Text("Simular carga")
+            }
+        }
+    }
+}
+
+// El brillo: un degradado que se corre de lado. Lo comparten todos los recuadros
+@Composable
+private fun rememberBrillo(): Brush {
+    // Reloj infinito: un numero que va de 0 a 1500 una y otra vez
+    val transicion = rememberInfiniteTransition(label = "brillo")
+    val desplazamiento by transicion.animateFloat(
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1500, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "desplazamiento"
+    )
+
+    // Degradado gris oscuro, gris claro, gris oscuro
+    return Brush.linearGradient(
+        colors = listOf(
+            Color(0xFFD6D6D6),
+            Color(0xFFF2F2F2),
+            Color(0xFFD6D6D6)
+        ),
+        start = Offset(desplazamiento - 400f, 0f),
+        end = Offset(desplazamiento, 0f)
+    )
+}
+
+// El esqueleto: mismas formas que el contenido real, pero grises y con brillo
+@Composable
+private fun PerfilEsqueleto() {
+    val brillo = rememberBrillo()
+
+    Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        // Recuadro grande: la foto de la publicacion
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(brillo)
+        )
+
+        // Circulo + dos lineas: foto de perfil, nombre y carrera
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
+                    .background(brillo)
+            )
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .height(16.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(brillo)
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(16.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(brillo)
+                )
+            }
+        }
+
+        // Dos lineas de texto
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(14.dp)
+                .clip(RoundedCornerShape(7.dp))
+                .background(brillo)
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(14.dp)
+                .clip(RoundedCornerShape(7.dp))
+                .background(brillo)
+        )
+
+        // Dos botones
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Box(
+                modifier = Modifier
+                    .size(width = 90.dp, height = 36.dp)
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(brillo)
+            )
+            Box(
+                modifier = Modifier
+                    .size(width = 90.dp, height = 36.dp)
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(brillo)
+            )
+        }
+    }
+}
+
+// El contenido real que aparece cuando termina la carga (mismas formas que el esqueleto)
+@Composable
+private fun PerfilReal() {
+    Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        // La foto de la publicacion
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(MaterialTheme.colorScheme.primary),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Animaciones en Compose",
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        // Foto de perfil, nombre y carrera
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Person,
+                    contentDescription = "Foto de perfil"
+                )
+            }
+            Column {
+                Text(
+                    text = "Nazaret Claure",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "Ingenieria de Sistemas",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+
+        // El texto
+        Text(
+            text = "Estoy aprendiendo animaciones en Compose. Todo lo que ves se anima cambiando un estado.",
+            style = MaterialTheme.typography.bodyMedium
+        )
+
+        // Los botones
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Button(onClick = { }) { Text("Seguir") }
+            OutlinedButton(onClick = { }) { Text("Mensaje") }
         }
     }
 }
