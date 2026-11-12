@@ -95,6 +95,19 @@ fun AnimationsScreen(navController: NavHostController) {
             fontWeight = FontWeight.Bold
         )
 
+        // Animaciones 1 y 2: solo informativas, se ven en otras partes de la app
+        InfoSection(
+            titulo = "1. Splash con salida",
+            descripcion = "Al abrir la app sale el logo y la pantalla se desvanece.",
+            donde = "Donde verla: cierra la app por completo y vuelvela a abrir."
+        )
+
+        InfoSection(
+            titulo = "2. Transicion entre pantallas",
+            descripcion = "Las pantallas se deslizan al navegar.",
+            donde = "Donde verla: toca Volver y entra de nuevo desde Perfil, o pasa de Login a otra pantalla."
+        )
+
         // Animacion 3: contenido que cambia
         LikesSection()
 
@@ -667,6 +680,30 @@ private fun VectorSection() {
             Button(onClick = { grande = !grande }) {
                 Text(if (grande) "Achicar" else "Agrandar")
             }
+        }
+    }
+}
+@Composable
+private fun InfoSection(titulo: String, descripcion: String, donde: String) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = titulo,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = descripcion,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = donde,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }
