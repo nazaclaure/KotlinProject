@@ -2,6 +2,7 @@ package edu.ucb.project.animations.presentation.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -137,6 +138,13 @@ private fun LikesSection() {
     var meGusta by remember { mutableStateOf(false) }
     var likes by remember { mutableStateOf(128) }
 
+    // El color del corazon cambia suave de gris a rojo (y al reves)
+    val colorCorazon by animateColorAsState(
+        targetValue = if (meGusta) Color.Red else Color.Gray,
+        animationSpec = tween(durationMillis = 400),
+        label = "colorCorazon"
+    )
+
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -165,7 +173,7 @@ private fun LikesSection() {
                     Icon(
                         imageVector = Icons.Filled.Favorite,
                         contentDescription = "Me gusta",
-                        tint = if (meGusta) Color.Red else Color.Gray
+                        tint = colorCorazon
                     )
                 }
 
