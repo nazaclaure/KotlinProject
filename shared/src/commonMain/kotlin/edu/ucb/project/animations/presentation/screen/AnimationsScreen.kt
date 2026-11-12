@@ -7,6 +7,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -17,6 +18,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -58,15 +60,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import kotlinproject.shared.generated.resources.Res
+import kotlinproject.shared.generated.resources.corazon
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun AnimationsScreen(navController: NavHostController) {
@@ -105,6 +112,9 @@ fun AnimationsScreen(navController: NavHostController) {
 
         // Animacion 8: brillo de carga (skeleton)
         SkeletonSection()
+
+        // Animacion 9: vector animado
+        VectorSection()
     }
 }
 
@@ -589,6 +599,74 @@ private fun PerfilReal() {
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             Button(onClick = { }) { Text("Seguir") }
             OutlinedButton(onClick = { }) { Text("Mensaje") }
+        }
+    }
+}
+@Composable
+private fun VectorSection() {
+    // Estado: el corazon esta grande o chico
+    var grande by remember { mutableStateOf(false) }
+
+    // Compose mueve el tamano de 60.dp a 200.dp durante 1 segundo
+    val tamano by animateDpAsState(
+        targetValue = if (grande) 200.dp else 60.dp,
+        animationSpec = tween(durationMillis = 1000),
+        label = "tamano"
+    )
+
+    // Y a la vez gira de 0 a 360 grados
+    val giro by animateFloatAsState(
+        targetValue = if (grande) 360f else 0f,
+        animationSpec = tween(durationMillis = 1000),
+        label = "giro"
+    )
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = "9. Vector animado (SVG)",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "El corazon es una imagen vectorial: crece y gira, y se ve nitido todo el tiempo.",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            // Caja fija para que el resto de la pantalla no salte cuando crece
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(210.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(Res.drawable.corazon),
+                    contentDescription = "Corazon vectorial",
+                    modifier = Modifier
+                        .size(tamano)
+                        .rotate(giro)
+                )
+            }
+
+            val letra by animateFloatAsState(
+                targetValue = if (grande) 36f else 16f,
+                animationSpec = tween(durationMillis = 1000),
+                label = "letra"
+            )
+            Text(
+                text = "Texto vectorial",
+                fontSize = letra.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Button(onClick = { grande = !grande }) {
+                Text(if (grande) "Achicar" else "Agrandar")
+            }
         }
     }
 }
