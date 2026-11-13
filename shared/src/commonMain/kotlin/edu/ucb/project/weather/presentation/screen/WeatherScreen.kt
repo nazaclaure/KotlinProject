@@ -108,13 +108,13 @@ fun WeatherScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    InfoRow(label = "Temperatura", value = "${state.temperature} \u00b0C")
-                    InfoRow(label = "Viento", value = "${state.windspeed} km/h")
-                    InfoRow(label = "Direccion del viento", value = "${state.winddirection}\u00b0")
-                    InfoRow(label = "Codigo de clima", value = "${state.weathercode}")
-                    InfoRow(label = "Fecha y hora", value = "${state.time}")
-                    InfoRow(label = "Latitud", value = "${state.latitude}")
-                    InfoRow(label = "Longitud", value = "${state.longitude}")
+                    InfoRow(label = stringResource(Res.string.weather_info_temperature), value = "${state.temperature} \u00b0C")
+                    InfoRow(label = stringResource(Res.string.weather_info_wind), value = "${state.windspeed} km/h")
+                    InfoRow(label = stringResource(Res.string.weather_info_wind_direction), value = "${state.winddirection}\u00b0")
+                    InfoRow(label = stringResource(Res.string.weather_info_code), value = "${state.weathercode}")
+                    InfoRow(label = stringResource(Res.string.weather_info_datetime), value = "${state.time}")
+                    InfoRow(label = stringResource(Res.string.weather_info_latitude), value = "${state.latitude}")
+                    InfoRow(label = stringResource(Res.string.weather_info_longitude), value = "${state.longitude}")
                 }
             }
         }

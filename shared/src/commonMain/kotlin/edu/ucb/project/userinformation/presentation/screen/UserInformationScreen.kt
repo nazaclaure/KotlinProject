@@ -126,10 +126,10 @@ fun UserInformationScreen(
                         )
                     }
                     if (!state.email.isNullOrEmpty()) {
-                        InfoRow(label = "Email", value = state.email!!)
+                        InfoRow(label = stringResource(Res.string.userinfo_email), value = state.email!!)
                     }
                     if (!state.company.isNullOrEmpty()) {
-                        InfoRow(label = "Empresa", value = state.company!!)
+                        InfoRow(label = stringResource(Res.string.userinfo_company), value = state.company!!)
                     }
                 }
             }

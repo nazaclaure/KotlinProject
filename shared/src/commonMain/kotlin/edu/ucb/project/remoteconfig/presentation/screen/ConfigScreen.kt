@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,13 +32,13 @@ fun ConfigScreen(
     }
 
     PantallaHoja(
-        titulo = "Configuraci\u00f3n remota",
+        titulo = stringResource(Res.string.profile_remote_config),
         desplazable = true,
         espacio = 12.dp
     ) {
         if (state.isOffline) {
             DsLabel(
-                text = "offline"
+                text = stringResource(Res.string.config_offline)
             )
         }
 
@@ -48,7 +50,7 @@ fun ConfigScreen(
             ) {
 
                 DsLabel(
-                    text = "Mensaje: ${state.welcomeMessage}"
+                    text = stringResource(Res.string.config_message, state.welcomeMessage)
                 )
 
                 Spacer(
@@ -56,7 +58,7 @@ fun ConfigScreen(
                 )
 
                 DsLabel(
-                    text = "M\u00e1ximo de elementos: ${state.maxItems}"
+                    text = stringResource(Res.string.config_max_items, state.maxItems)
                 )
 
                 Spacer(
@@ -64,25 +66,25 @@ fun ConfigScreen(
                 )
 
                 DsLabel(
-                    text = "Feature habilitado: ${state.featureEnabled}"
+                    text = stringResource(Res.string.config_feature, state.featureEnabled)
                 )
             }
         }
 
         if (state.isLoading) {
             DsLabel(
-                text = "Cargando..."
+                text = stringResource(Res.string.config_loading)
             )
         }
 
         state.error?.let {
             DsLabel(
-                text = "Error: $it"
+                text = stringResource(Res.string.config_error, it)
             )
         }
 
         PrimaryButton(
-            text = "Refrescar",
+            text = stringResource(Res.string.config_refresh),
             onClick = {
                 viewModel.onEvent(
                     ConfigEvents.RefreshConfig

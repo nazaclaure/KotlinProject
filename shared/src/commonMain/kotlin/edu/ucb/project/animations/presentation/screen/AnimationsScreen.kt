@@ -3,6 +3,8 @@ package edu.ucb.project.animations.presentation.screen
 import androidx.compose.ui.text.style.TextAlign
 import edu.ucb.project.core.theme.colorTituloCabecera
 import edu.ucb.project.core.theme.PantallaDegradado
+import org.jetbrains.compose.resources.stringResource
+import kotlinproject.shared.generated.resources.*
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -88,7 +90,7 @@ fun AnimationsScreen(navController: NavHostController) {
         alineacion = Alignment.Start,
         cabecera = {
             Text(
-                text = "Animaciones",
+                text = stringResource(Res.string.profile_animations),
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold,
                 color = colorTituloCabecera(),
@@ -96,17 +98,29 @@ fun AnimationsScreen(navController: NavHostController) {
             )
         },
         contenido = {
+            // Aviso: esta es la version sin animaciones
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+            ) {
+                Text(
+                    text = stringResource(Res.string.anim_off_banner),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         // Animaciones 1 y 2: solo informativas, se ven en otras partes de la app
         InfoSection(
-            titulo = "1. Apertura de la app",
-            descripcion = "Al abrir la app entra directo a la pantalla.",
-            donde = "Donde verla: cierra la app por completo y vuelvela a abrir."
+            titulo = stringResource(Res.string.anim_1_title),
+            descripcion = stringResource(Res.string.anim_1_desc),
+            donde = stringResource(Res.string.anim_1_where)
         )
 
         InfoSection(
-            titulo = "2. Cambio de pantallas",
-            descripcion = "Las pantallas cambian de golpe al navegar.",
-            donde = "Donde verla: toca Volver y entra de nuevo desde Perfil, o pasa de Login a otra pantalla."
+            titulo = stringResource(Res.string.anim_2_title),
+            descripcion = stringResource(Res.string.anim_2_desc),
+            donde = stringResource(Res.string.anim_2_where)
         )
 
         // Animacion 3: contenido que cambia
@@ -152,12 +166,12 @@ private fun LikesSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "3. Contenido que cambia",
+                text = stringResource(Res.string.anim_3_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Toca el corazon y mira como cambia el numero.",
+                text = stringResource(Res.string.anim_3_desc),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -167,7 +181,7 @@ private fun LikesSection() {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Favorite,
-                    contentDescription = "Me gusta",
+                    contentDescription = stringResource(Res.string.anim_3_like),
                     tint = colorCorazon,
                     modifier = Modifier
                         .size(48.dp)
@@ -183,7 +197,7 @@ private fun LikesSection() {
 
                 // Sin animacion: el numero cambia de golpe
                 Text(
-                    text = "$likes likes",
+                    text = stringResource(Res.string.anim_likes, likes),
                     style = MaterialTheme.typography.headlineSmall
                 )
             }
@@ -211,12 +225,12 @@ private fun BotonSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "4. Boton",
+                text = stringResource(Res.string.anim_4_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Boton normal: al apretarlo no cambia de tamano.",
+                text = stringResource(Res.string.anim_4_desc),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -228,7 +242,7 @@ private fun BotonSection() {
                     scaleY = escala
                 }
             ) {
-                Text("Tocame")
+                Text(stringResource(Res.string.anim_4_button))
             }
         }
     }
@@ -240,11 +254,11 @@ private fun ListaSection() {
     var mostrar by remember { mutableStateOf(false) }
 
     val canciones = listOf(
-        "Cancion 1",
-        "Cancion 2",
-        "Cancion 3",
-        "Cancion 4",
-        "Cancion 5"
+        stringResource(Res.string.anim_song, 1),
+        stringResource(Res.string.anim_song, 2),
+        stringResource(Res.string.anim_song, 3),
+        stringResource(Res.string.anim_song, 4),
+        stringResource(Res.string.anim_song, 5)
     )
 
     Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
@@ -253,17 +267,17 @@ private fun ListaSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "5. Lista",
+                text = stringResource(Res.string.anim_5_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Toca el boton para mostrar la lista de canciones.",
+                text = stringResource(Res.string.anim_5_desc),
                 style = MaterialTheme.typography.bodyMedium
             )
 
             Button(onClick = { mostrar = !mostrar }) {
-                Text(if (mostrar) "Ocultar lista" else "Mostrar lista")
+                Text(if (mostrar) stringResource(Res.string.anim_5_hide) else stringResource(Res.string.anim_5_show))
             }
 
             canciones.forEachIndexed { indice, nombre ->
@@ -315,28 +329,25 @@ private fun TarjetaSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "6. Tarjeta",
+                text = stringResource(Res.string.anim_6_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Toca la tarjeta para ver mas o ver menos.",
+                text = stringResource(Res.string.anim_6_desc),
                 style = MaterialTheme.typography.bodyMedium
             )
 
             // Solo se muestra cuando la tarjeta esta expandida
             if (expandida) {
                 Text(
-                    text = "Este es el texto completo. Cuando tocas la tarjeta, " +
-                        "su tamano cambia: la tarjeta " +
-                        "cambia de golpe, sin movimiento. Es lo mismo " +
-                        "que pasa en el ver mas de Facebook o Instagram.",
+                    text = stringResource(Res.string.anim_6_text),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
             Text(
-                text = if (expandida) "Ver menos" else "Ver mas",
+                text = if (expandida) stringResource(Res.string.anim_6_less) else stringResource(Res.string.anim_6_more),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -366,12 +377,12 @@ private fun ProgresoSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "7. Progreso",
+                text = stringResource(Res.string.anim_7_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "El circulo se llena y el numero cambia, como una descarga.",
+                text = stringResource(Res.string.anim_7_desc),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -389,7 +400,7 @@ private fun ProgresoSection() {
             }
 
             Button(onClick = { completa = !completa }) {
-                Text(if (completa) "Reiniciar" else "Descargar")
+                Text(if (completa) stringResource(Res.string.anim_7_reset) else stringResource(Res.string.anim_7_download))
             }
         }
     }
@@ -413,12 +424,12 @@ private fun SkeletonSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "8. Carga (skeleton)",
+                text = stringResource(Res.string.anim_8_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Mientras cargan los datos se ven rectangulos grises.",
+                text = stringResource(Res.string.anim_8_desc),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -437,7 +448,7 @@ private fun SkeletonSection() {
                     }
                 }
             ) {
-                Text("Simular carga")
+                Text(stringResource(Res.string.anim_8_simulate))
             }
         }
     }
@@ -562,7 +573,7 @@ private fun PerfilReal() {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "Animaciones en Compose",
+                text = stringResource(Res.string.anim_profile_banner),
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.bodyMedium
@@ -583,7 +594,7 @@ private fun PerfilReal() {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Person,
-                    contentDescription = "Foto de perfil"
+                    contentDescription = stringResource(Res.string.anim_profile_photo)
                 )
             }
             Column {
@@ -593,7 +604,7 @@ private fun PerfilReal() {
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Ingenieria de Sistemas",
+                    text = stringResource(Res.string.anim_profile_career),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -601,14 +612,14 @@ private fun PerfilReal() {
 
         // El texto
         Text(
-            text = "Estoy aprendiendo animaciones en Compose. Todo lo que ves se anima cambiando un estado.",
+            text = stringResource(Res.string.anim_profile_bio),
             style = MaterialTheme.typography.bodyMedium
         )
 
         // Los botones
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Button(onClick = { }) { Text("Seguir") }
-            OutlinedButton(onClick = { }) { Text("Mensaje") }
+            Button(onClick = { }) { Text(stringResource(Res.string.anim_follow)) }
+            OutlinedButton(onClick = { }) { Text(stringResource(Res.string.anim_message)) }
         }
     }
 }
@@ -638,12 +649,12 @@ private fun VectorSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "9. Vector (SVG)",
+                text = stringResource(Res.string.anim_9_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "El corazon es una imagen vectorial: cambia de tamano y se ve nitido todo el tiempo.",
+                text = stringResource(Res.string.anim_9_desc),
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -656,7 +667,7 @@ private fun VectorSection() {
             ) {
                 Image(
                     painter = painterResource(Res.drawable.corazon),
-                    contentDescription = "Corazon vectorial",
+                    contentDescription = stringResource(Res.string.anim_9_cd),
                     modifier = Modifier
                         .size(tamano)
                         .rotate(giro)
@@ -669,13 +680,13 @@ private fun VectorSection() {
                 label = "letra"
             )
             Text(
-                text = "Texto vectorial",
+                text = stringResource(Res.string.anim_9_text),
                 fontSize = letra.sp,
                 fontWeight = FontWeight.Bold
             )
 
             Button(onClick = { grande = !grande }) {
-                Text(if (grande) "Achicar" else "Agrandar")
+                Text(if (grande) stringResource(Res.string.anim_9_shrink) else stringResource(Res.string.anim_9_grow))
             }
         }
     }
