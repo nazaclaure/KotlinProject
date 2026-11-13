@@ -1,5 +1,8 @@
 package edu.ucb.project.animations.presentation.screen
 
+import androidx.compose.ui.text.style.TextAlign
+import edu.ucb.project.core.theme.colorTituloCabecera
+import edu.ucb.project.core.theme.PantallaDegradado
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -78,24 +81,21 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun AnimationsScreen(navController: NavHostController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .padding(24.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        TextButton(onClick = { navController.popBackStack() }) {
-            Text("Volver")
-        }
-
-        Text(
-            text = "Animaciones",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-
+    PantallaDegradado(
+        anclada = false,
+        onVolver = { navController.popBackStack() },
+        espacio = 24.dp,
+        alineacion = Alignment.Start,
+        cabecera = {
+            Text(
+                text = "Animaciones",
+                style = MaterialTheme.typography.displaySmall,
+                fontWeight = FontWeight.Bold,
+                color = colorTituloCabecera(),
+                textAlign = TextAlign.Center
+            )
+        },
+        contenido = {
         // Animaciones 1 y 2: solo informativas, se ven en otras partes de la app
         InfoSection(
             titulo = "1. Splash con salida",
@@ -129,7 +129,8 @@ fun AnimationsScreen(navController: NavHostController) {
 
         // Animacion 9: vector animado
         VectorSection()
-    }
+        }
+    )
 }
 
 @Composable
@@ -145,7 +146,7 @@ private fun LikesSection() {
         label = "colorCorazon"
     )
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -216,7 +217,7 @@ private fun BotonSection() {
         label = "escala"
     )
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(
             modifier = Modifier.padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -259,7 +260,7 @@ private fun ListaSection() {
         "Cancion 5"
     )
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -319,7 +320,8 @@ private fun TarjetaSection() {
             .fillMaxWidth()
             // animateContentSize anima el cambio de tamano cuando el contenido cambia
             .animateContentSize()
-            .clickable { expandida = !expandida }
+            .clickable { expandida = !expandida },
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -370,7 +372,7 @@ private fun ProgresoSection() {
     // El mismo numero, pero de 0 a 100 para mostrarlo como porcentaje
     val porcentaje = (progreso * 100).toInt()
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(
             modifier = Modifier.padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -418,7 +420,7 @@ private fun SkeletonSection() {
         cargando = false
     }
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -642,7 +644,7 @@ private fun VectorSection() {
         label = "giro"
     )
 
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(
             modifier = Modifier.padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -693,7 +695,7 @@ private fun VectorSection() {
 }
 @Composable
 private fun InfoSection(titulo: String, descripcion: String, donde: String) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+    Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(
             modifier = Modifier.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)

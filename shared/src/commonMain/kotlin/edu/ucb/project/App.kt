@@ -2,7 +2,9 @@ package edu.ucb.project
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -13,16 +15,34 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
+import edu.ucb.ds.theme.DsColors
+import edu.ucb.ds.theme.DsRadius
 import edu.ucb.ds.theme.DsTheme
 import edu.ucb.ds.theme.DsThemeMode
+import edu.ucb.ds.theme.colorsFor
 import edu.ucb.project.core.navigation.AppNavHost
 import edu.ucb.project.core.theme.FontSizeChoice
 import edu.ucb.project.core.theme.LocalThemeController
 import edu.ucb.project.core.theme.ThemeChoice
 import edu.ucb.project.core.theme.ThemeController
+
+// Paleta propia del modo claro: lila y rosa suave sobre fondo casi blanco
+private val PaletaLila = DsColors(
+    primary = Color(0xFF7B57C9), onPrimary = Color.White,
+    secondary = Color(0xFFF4A6C6), onSecondary = Color(0xFF2B2140),
+    background = Color(0xFFF7F3FC), onBackground = Color(0xFF2B2140),
+    surface = Color.White, onSurface = Color(0xFF2B2140),
+    error = Color(0xFFD32F2F), onError = Color.White,
+    outline = Color(0xFF9A8DB5)
+)
+
+// Esquinas mas redondeadas para los componentes del Design System
+private val EsquinasSuaves = DsRadius(small = 8.dp, medium = 20.dp, large = 28.dp, full = 50.dp)
 
 @Composable
 fun App() {
@@ -54,7 +74,11 @@ fun App() {
 
     CompositionLocalProvider(LocalDensity provides scaledDensity) {
         // El Design System define los tokens (colores, espaciado, radios) segun el modo
-        DsTheme(mode = mode) {
+        DsTheme(
+            mode = mode,
+            colors = if (mode == DsThemeMode.LIGHT) PaletaLila else colorsFor(mode),
+            radius = EsquinasSuaves
+        ) {
             val c = DsTheme.colors
             val surfaceVariant = c.onSurface.copy(alpha = 0.10f).compositeOver(c.surface)
             val primaryContainer = c.primary.copy(alpha = 0.25f).compositeOver(c.surface)
@@ -68,8 +92,13 @@ fun App() {
                     surface = c.surface, onSurface = c.onSurface,
                     error = c.error, onError = c.onError,
                     outline = c.outline,
-                    surfaceVariant = surfaceVariant, onSurfaceVariant = c.onSurface,
-                    primaryContainer = primaryContainer, onPrimaryContainer = c.onSurface
+                    surfaceVariant = Color(0xFFEFE8F9), onSurfaceVariant = c.onSurface,
+                    primaryContainer = Color(0xFFE9DFFB), onPrimaryContainer = c.onSurface,
+                    // Las tarjetas (Card) usan este color: blancas sobre el fondo lavanda
+                    surfaceContainerHighest = Color.White,
+                    surfaceContainerHigh = Color(0xFFF1EBFA),
+                    surfaceContainer = Color(0xFFF1EBFA),
+                    surfaceContainerLow = Color.White
                 )
             } else {
                 darkColorScheme(
@@ -84,7 +113,14 @@ fun App() {
                 )
             }
 
-            MaterialTheme(colorScheme = scheme) {
+            // Esquinas mas redondeadas en toda la app (tarjetas, botones, campos)
+            val shapes = Shapes(
+                small = RoundedCornerShape(12.dp),
+                medium = RoundedCornerShape(20.dp),
+                large = RoundedCornerShape(28.dp)
+            )
+
+            MaterialTheme(colorScheme = scheme, shapes = shapes) {
                 CompositionLocalProvider(LocalThemeController provides controller) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),

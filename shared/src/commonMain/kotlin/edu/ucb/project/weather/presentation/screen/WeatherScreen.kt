@@ -6,10 +6,10 @@ import kotlinproject.shared.generated.resources.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -17,7 +17,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,9 +26,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import edu.ucb.project.core.theme.PantallaHoja
 import edu.ucb.project.weather.presentation.state.WeatherEffects
 import edu.ucb.project.weather.presentation.state.WeatherEvents
 import edu.ucb.project.weather.presentation.state.WeatherVM
@@ -55,28 +54,18 @@ fun WeatherScreen(
 
     val hasResult = state.temperature != null
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    PantallaHoja(
+        titulo = stringResource(Res.string.weather_title),
+        onVolver = { navController.popBackStack() },
+        desplazable = true,
+        espacio = 12.dp
     ) {
-        TextButton(onClick = { navController.popBackStack() }) {
-            Text(stringResource(Res.string.common_back))
-        }
-
-        Text(
-            text = stringResource(Res.string.weather_title),
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
-        )
-
         OutlinedTextField(
             value = state.latitudeInput,
             onValueChange = { viewModel.onEvent(WeatherEvents.OnLatitudeChange(it)) },
             label = { Text(stringResource(Res.string.weather_latitude)) },
             singleLine = true,
+            shape = RoundedCornerShape(20.dp),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -85,6 +74,7 @@ fun WeatherScreen(
             onValueChange = { viewModel.onEvent(WeatherEvents.OnLongitudeChange(it)) },
             label = { Text(stringResource(Res.string.weather_longitude)) },
             singleLine = true,
+            shape = RoundedCornerShape(20.dp),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -94,7 +84,8 @@ fun WeatherScreen(
                 viewModel.onEvent(WeatherEvents.Search)
             },
             enabled = state.latitudeInput.isNotBlank() && state.longitudeInput.isNotBlank() && !state.isLoading,
-            modifier = Modifier.fillMaxWidth()
+            shape = RoundedCornerShape(28.dp),
+            modifier = Modifier.fillMaxWidth().height(52.dp)
         ) {
             Text(stringResource(Res.string.common_search))
         }
@@ -117,9 +108,9 @@ fun WeatherScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    InfoRow(label = "Temperatura", value = "${state.temperature} °C")
+                    InfoRow(label = "Temperatura", value = "${state.temperature} \u00b0C")
                     InfoRow(label = "Viento", value = "${state.windspeed} km/h")
-                    InfoRow(label = "Direccion del viento", value = "${state.winddirection}°")
+                    InfoRow(label = "Direccion del viento", value = "${state.winddirection}\u00b0")
                     InfoRow(label = "Codigo de clima", value = "${state.weathercode}")
                     InfoRow(label = "Fecha y hora", value = "${state.time}")
                     InfoRow(label = "Latitud", value = "${state.latitude}")

@@ -4,15 +4,11 @@ import org.jetbrains.compose.resources.stringResource
 import kotlinproject.shared.generated.resources.*
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -22,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import edu.ucb.project.core.theme.PantallaHoja
 import edu.ucb.project.moviedetail.presentation.state.MovieDetailEffects
 import edu.ucb.project.moviedetail.presentation.state.MovieDetailEvents
 import edu.ucb.project.moviedetail.presentation.state.MovieDetailVM
@@ -44,33 +41,33 @@ fun MovieDetailScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
+    PantallaHoja(
+        onVolver = { viewModel.onEvent(MovieDetailEvents.OnBackClicked) },
+        desplazable = true,
+        espacio = 12.dp
+    ) {
         when {
             state.isLoading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(24.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
             state.error != null -> {
-                Text(
-                    text = stringResource(Res.string.common_error, state.error.toString()),
-                    modifier = Modifier.align(Alignment.Center)
-                )
+                Text(text = stringResource(Res.string.common_error, state.error.toString()))
             }
             state.detail != null -> {
-                Column(modifier = Modifier.fillMaxSize().padding(24.dp)) {
-                    TextButton(onClick = { viewModel.onEvent(MovieDetailEvents.OnBackClicked) }) {
-                        Text(stringResource(Res.string.common_back))
-                    }
-                    Text(
-                        text = state.detail!!.title,
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)
-                    )
-                    Text(
-                        text = state.detail!!.description,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
+                Text(
+                    text = state.detail!!.title,
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = state.detail!!.description,
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
         }
     }

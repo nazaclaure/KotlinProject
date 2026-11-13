@@ -61,4 +61,6 @@
     <string name="movies_notify">Test notification</string>
     <string name="notify_title">Local notification</string>
     <string name="notify_text">Hello from the app</string>
+    <string name="profile_remote_config">Remote configuration</string>
+    <string name="profile_animations">Animations</string>
 </resources>

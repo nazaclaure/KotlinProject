@@ -1,9 +1,7 @@
 package edu.ucb.project.remoteconfig.presentation.screen
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import edu.ucb.ds.components.buttons.PrimaryButton
 import edu.ucb.ds.components.cards.DsCard
 import edu.ucb.ds.components.labels.DsLabel
+import edu.ucb.project.core.theme.PantallaHoja
 import edu.ucb.project.remoteconfig.presentation.state.ConfigEvents
 import edu.ucb.project.remoteconfig.presentation.state.ConfigVM
 import org.koin.compose.viewmodel.koinViewModel
@@ -30,17 +29,11 @@ fun ConfigScreen(
         viewModel.onEvent(ConfigEvents.LoadConfig)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+    PantallaHoja(
+        titulo = "Configuraci\u00f3n remota",
+        desplazable = true,
+        espacio = 12.dp
     ) {
-
-        DsLabel(
-            text = "Configuración remota"
-        )
-
         if (state.isOffline) {
             DsLabel(
                 text = "offline"
@@ -63,7 +56,7 @@ fun ConfigScreen(
                 )
 
                 DsLabel(
-                    text = "Máximo de elementos: ${state.maxItems}"
+                    text = "M\u00e1ximo de elementos: ${state.maxItems}"
                 )
 
                 Spacer(

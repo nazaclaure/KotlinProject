@@ -7,10 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -18,7 +18,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,12 +27,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import org.koin.compose.viewmodel.koinViewModel
 import edu.ucb.project.core.navigation.NavRoute
+import edu.ucb.project.core.theme.PantallaHoja
 import edu.ucb.project.userinformation.presentation.viewmodel.UserInformationEffect
 import edu.ucb.project.userinformation.presentation.viewmodel.UserInformationEvent
 import edu.ucb.project.userinformation.presentation.viewmodel.UserInformationViewModel
@@ -64,28 +65,18 @@ fun UserInformationScreen(
 
     val hasResult = !state.email.isNullOrEmpty() || !state.company.isNullOrEmpty() || !state.avatarUrl.isNullOrEmpty()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-            .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    PantallaHoja(
+        titulo = stringResource(Res.string.profile_github),
+        onVolver = { viewModel.emitEvent(UserInformationEvent.OnBack) },
+        desplazable = true,
+        espacio = 12.dp
     ) {
-        TextButton(onClick = { viewModel.emitEvent(UserInformationEvent.OnBack) }) {
-            Text(stringResource(Res.string.common_back))
-        }
-
-        Text(
-            text = stringResource(Res.string.profile_github),
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
-        )
-
         OutlinedTextField(
             value = state.alias,
             onValueChange = { viewModel.emitEvent(UserInformationEvent.OnAliasChange(it)) },
             label = { Text(stringResource(Res.string.github_user)) },
             singleLine = true,
+            shape = RoundedCornerShape(20.dp),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -95,7 +86,8 @@ fun UserInformationScreen(
                 viewModel.emitEvent(UserInformationEvent.OnSubmit)
             },
             enabled = state.alias.isNotBlank() && !state.isLoading,
-            modifier = Modifier.fillMaxWidth()
+            shape = RoundedCornerShape(28.dp),
+            modifier = Modifier.fillMaxWidth().height(52.dp)
         ) {
             Text(stringResource(Res.string.common_search))
         }
@@ -130,6 +122,7 @@ fun UserInformationScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(1f)
+                                .clip(RoundedCornerShape(20.dp))
                         )
                     }
                     if (!state.email.isNullOrEmpty()) {

@@ -6,19 +6,17 @@ import kotlinproject.shared.generated.resources.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -33,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import edu.ucb.ds.components.buttons.PrimaryButton
@@ -40,11 +39,9 @@ import edu.ucb.project.analytics.AnalyticsTracker
 import edu.ucb.project.core.navigation.NavRoute
 import edu.ucb.project.core.notifications.LocalNotifier
 import edu.ucb.project.core.survey.SurveyConfig
-import edu.ucb.project.core.theme.LocalThemeController
-import edu.ucb.project.core.theme.FontSizeChoice
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import edu.ucb.project.core.theme.ThemeChoice
+import edu.ucb.project.core.theme.PantallaDegradado
+import edu.ucb.project.core.theme.colorSubtituloCabecera
+import edu.ucb.project.core.theme.colorTituloCabecera
 import edu.ucb.project.movies.presentation.state.MovieEffects
 import edu.ucb.project.movies.presentation.state.MovieEvents
 import edu.ucb.project.movies.presentation.state.MovieVM
@@ -62,7 +59,6 @@ fun MovieScreen(
     analytics: AnalyticsTracker = koinInject()
 ) {
     val state by viewModel.uiState.collectAsState()
-    val themeController = LocalThemeController.current
     val uriHandler = LocalUriHandler.current
 
     // Textos de la notificacion local (traducidos segun el idioma)
@@ -126,121 +122,144 @@ fun MovieScreen(
         )
     }
 
-    Column(modifier = Modifier.fillMaxSize().statusBarsPadding()) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+    PantallaDegradado(
+        anclada = false,
+        espacio = 14.dp,
+        cabecera = {
+            // Perfil arriba a la derecha
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                FilledTonalButton(
+                    onClick = { navController.navigate(NavRoute.Profile) },
+                    shape = RoundedCornerShape(50)
+                ) {
+                    Text(stringResource(Res.string.movies_profile))
+                }
+            }
+
             Text(
                 text = stringResource(Res.string.movies_title),
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.displaySmall,
+                fontWeight = FontWeight.Bold,
+                color = colorTituloCabecera(),
+                textAlign = TextAlign.Center
             )
-            TextButton(onClick = { navController.navigate(NavRoute.Profile) }) {
-                Text(stringResource(Res.string.movies_profile))
-            }
-        }
+            // Mensaje que viene de Remote Config
+            Text(
+                text = config.mensajeBienvenida,
+                style = MaterialTheme.typography.bodyLarge,
+                color = colorSubtituloCabecera(),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
+            )
 
-        // Mensaje que viene de Remote Config
-        Text(
-            text = config.mensajeBienvenida,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
-        )
-
-        // E25-5: boton que dispara una notificacion local
-        PrimaryButton(
-            text = stringResource(Res.string.movies_notify),
-            onClick = { LocalNotifier.show(notifyTitle, notifyText) },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-
-        // Promo: solo se muestra si Remote Config lo activa
-        if (config.mostrarPromo) {
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
-                Text(
-                    text = stringResource(Res.string.movies_promo),
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
-        }
-
-        Box(modifier = Modifier.weight(1f)) {
+            // Peliculas: juntas con el titulo
             when {
                 state.isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    Box(
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
                 state.error != null -> {
                     Text(
                         text = stringResource(Res.string.common_error, state.error.toString()),
-                        modifier = Modifier.align(Alignment.Center)
+                        color = colorTituloCabecera()
                     )
                 }
                 else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(state.movies) { movie ->
-                            Card(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        // ANALYTICS: el usuario toco una pelicula
-                                        analytics.logEvent(
-                                            "movie_click",
-                                            mapOf("movie_id" to movie.id.toString())
-                                        )
-                                        viewModel.onEvent(MovieEvents.OnMovieClicked(movie.id))
-                                    },
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                                )
-                            ) {
-                                Text(
-                                    text = movie.title,
-                                    style = MaterialTheme.typography.titleMedium,
-                                    modifier = Modifier.padding(16.dp)
-                                )
-                            }
+                    state.movies.forEach { movie ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 10.dp)
+                                .clickable {
+                                    // ANALYTICS: el usuario toco una pelicula
+                                    analytics.logEvent(
+                                        "movie_click",
+                                        mapOf("movie_id" to movie.id.toString())
+                                    )
+                                    viewModel.onEvent(MovieEvents.OnMovieClicked(movie.id))
+                                },
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            )
+                        ) {
+                            Text(
+                                text = movie.title,
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(16.dp)
+                            )
                         }
                     }
                 }
             }
+
+            // Catalogo va junto a las peliculas
+            FilledTonalButton(
+                onClick = { navController.navigate(NavRoute.Catalog) },
+                shape = RoundedCornerShape(28.dp),
+                modifier = Modifier.fillMaxWidth().height(52.dp)
+            ) {
+                Text(stringResource(Res.string.movies_catalog))
+            }
+        },
+        contenido = {
+            // E25-5: boton que dispara una notificacion local
+            PrimaryButton(
+                text = stringResource(Res.string.movies_notify),
+                onClick = { LocalNotifier.show(notifyTitle, notifyText) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            // Promo: solo se muestra si Remote Config lo activa
+            if (config.mostrarPromo) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
+                ) {
+                    Text(
+                        text = stringResource(Res.string.movies_promo),
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            }
+
+            // Separacion para no confundir estos botones con las peliculas
+            Spacer(modifier = Modifier.height(20.dp))
+
+            FilledTonalButton(
+                onClick = { navController.navigate(NavRoute.Weather) },
+                shape = RoundedCornerShape(28.dp),
+                modifier = Modifier.fillMaxWidth().height(52.dp)
+            ) {
+                Text(stringResource(Res.string.movies_weather))
+            }
+            FilledTonalButton(
+                onClick = { navController.navigate(NavRoute.Dollar) },
+                shape = RoundedCornerShape(28.dp),
+                modifier = Modifier.fillMaxWidth().height(52.dp)
+            ) {
+                Text(stringResource(Res.string.movies_dollar))
+            }
+            // SURVEYMONKEY: boton fijo para abrir la encuesta cuando el usuario quiera
+            FilledTonalButton(
+                onClick = {
+                    analytics.logEvent("open_survey", mapOf("source" to "button"))
+                    uriHandler.openUri(SurveyConfig.SURVEY_URL)
+                },
+                shape = RoundedCornerShape(28.dp),
+                modifier = Modifier.fillMaxWidth().height(52.dp)
+            ) {
+                Text(stringResource(Res.string.movies_feedback))
+            }
         }
-        TextButton(
-            onClick = { navController.navigate(NavRoute.Catalog) },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
-        ) {
-            Text(stringResource(Res.string.movies_catalog))
-        }
-        TextButton(
-            onClick = { navController.navigate(NavRoute.Weather) },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
-        ) {
-            Text(stringResource(Res.string.movies_weather))
-        }
-        TextButton(
-            onClick = { navController.navigate(NavRoute.Dollar) },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
-        ) {
-            Text(stringResource(Res.string.movies_dollar))
-        }
-        // SURVEYMONKEY: boton fijo para abrir la encuesta cuando el usuario quiera
-        TextButton(
-            onClick = {
-                analytics.logEvent("open_survey", mapOf("source" to "button"))
-                uriHandler.openUri(SurveyConfig.SURVEY_URL)
-            },
-            modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp)
-        ) {
-            Text(stringResource(Res.string.movies_feedback))
-        }
-    }
+    )
 }
