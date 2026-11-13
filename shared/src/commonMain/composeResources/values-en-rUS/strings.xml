@@ -63,4 +63,20 @@
     <string name="notify_text">Hello from the app</string>
     <string name="profile_remote_config">Remote configuration</string>
     <string name="profile_animations">Animations</string>
+    <string name="weather_info_temperature">Temperature</string>
+    <string name="weather_info_wind">Wind</string>
+    <string name="weather_info_wind_direction">Wind direction</string>
+    <string name="weather_info_code">Weather code</string>
+    <string name="weather_info_datetime">Date and time</string>
+    <string name="weather_info_latitude">Latitude</string>
+    <string name="weather_info_longitude">Longitude</string>
+    <string name="config_offline">Offline</string>
+    <string name="config_message">Message: %1$s</string>
+    <string name="config_max_items">Maximum items: %1$s</string>
+    <string name="config_feature">Feature enabled: %1$s</string>
+    <string name="config_loading">Loading...</string>
+    <string name="config_error">Error: %1$s</string>
+    <string name="config_refresh">Refresh</string>
+    <string name="userinfo_email">Email</string>
+    <string name="userinfo_company">Company</string>
 </resources>
