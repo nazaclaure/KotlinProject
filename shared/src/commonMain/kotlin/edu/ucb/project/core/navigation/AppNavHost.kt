@@ -23,7 +23,7 @@ import edu.ucb.project.remoteconfig.presentation.screen.ConfigScreen
 import edu.ucb.project.animations.presentation.screen.AnimationsScreen
 
 // Duracion de todas las transiciones (en milisegundos)
-private const val DURACION_TRANSICION = 400
+private const val DURACION_TRANSICION = 0
 
 @Composable
 fun AppNavHost() {

@@ -35,32 +35,6 @@ class MainActivity : ComponentActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // SPLASH: debe ir ANTES de super.onCreate. Cambia el tema Starting por el tema normal
-        val splashScreen = installSplashScreen()
-
-        // SPLASH: lo mantiene 1.2 segundos para que se alcance a ver (solo al abrir la app)
-        splashScreen.setKeepOnScreenCondition { mantenerSplash }
-        if (savedInstanceState == null) {
-            Handler(Looper.getMainLooper()).postDelayed({ mantenerSplash = false }, 1200)
-        } else {
-            mantenerSplash = false
-        }
-
-        // SPLASH: animacion de salida -> el icono crece y toda la pantalla se desvanece
-        splashScreen.setOnExitAnimationListener { splashProvider ->
-            splashProvider.iconView.animate()
-                .scaleX(1.6f)
-                .scaleY(1.6f)
-                .setDuration(500L)
-                .start()
-
-            splashProvider.view.animate()
-                .alpha(0f)
-                .setDuration(500L)
-                .withEndAction { splashProvider.remove() }
-                .start()
-        }
-
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 

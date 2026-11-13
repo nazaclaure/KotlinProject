@@ -30,7 +30,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:name=".MainActivity"
-            android:theme="@style/Theme.App.Starting">
+            android:theme="@style/Theme.App.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

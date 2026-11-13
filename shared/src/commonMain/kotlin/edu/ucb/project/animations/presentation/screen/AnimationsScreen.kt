@@ -98,14 +98,14 @@ fun AnimationsScreen(navController: NavHostController) {
         contenido = {
         // Animaciones 1 y 2: solo informativas, se ven en otras partes de la app
         InfoSection(
-            titulo = "1. Splash con salida",
-            descripcion = "Al abrir la app sale el logo y la pantalla se desvanece.",
+            titulo = "1. Apertura de la app",
+            descripcion = "Al abrir la app entra directo a la pantalla.",
             donde = "Donde verla: cierra la app por completo y vuelvela a abrir."
         )
 
         InfoSection(
-            titulo = "2. Transicion entre pantallas",
-            descripcion = "Las pantallas se deslizan al navegar.",
+            titulo = "2. Cambio de pantallas",
+            descripcion = "Las pantallas cambian de golpe al navegar.",
             donde = "Donde verla: toca Volver y entra de nuevo desde Perfil, o pasa de Login a otra pantalla."
         )
 
@@ -142,7 +142,7 @@ private fun LikesSection() {
     // El color del corazon cambia suave de gris a rojo (y al reves)
     val colorCorazon by animateColorAsState(
         targetValue = if (meGusta) Color.Red else Color.Gray,
-        animationSpec = tween(durationMillis = 400),
+        animationSpec = tween(durationMillis = 0),
         label = "colorCorazon"
     )
 
@@ -165,40 +165,27 @@ private fun LikesSection() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                IconButton(
-                    onClick = {
-                        meGusta = !meGusta
-                        likes = if (meGusta) likes + 1 else likes - 1
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Favorite,
-                        contentDescription = "Me gusta",
-                        tint = colorCorazon
-                    )
-                }
-
-                // AnimatedContent anima cada vez que cambia "likes"
-                AnimatedContent(
-                    targetState = likes,
-                    transitionSpec = {
-                        if (targetState > initialState) {
-                            // Sube: el numero nuevo entra desde abajo
-                            (slideInVertically { alto -> alto } + fadeIn()) togetherWith
-                                (slideOutVertically { alto -> -alto } + fadeOut())
-                        } else {
-                            // Baja: el numero nuevo entra desde arriba
-                            (slideInVertically { alto -> -alto } + fadeIn()) togetherWith
-                                (slideOutVertically { alto -> alto } + fadeOut())
+                Icon(
+                    imageVector = Icons.Filled.Favorite,
+                    contentDescription = "Me gusta",
+                    tint = colorCorazon,
+                    modifier = Modifier
+                        .size(48.dp)
+                        .padding(12.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
+                            meGusta = !meGusta
+                            likes = if (meGusta) likes + 1 else likes - 1
                         }
-                    },
-                    label = "likes"
-                ) { valor ->
-                    Text(
-                        text = "$valor likes",
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
+                )
+
+                // Sin animacion: el numero cambia de golpe
+                Text(
+                    text = "$likes likes",
+                    style = MaterialTheme.typography.headlineSmall
+                )
             }
         }
     }
@@ -212,8 +199,8 @@ private fun BotonSection() {
 
     // Si esta presionado el tamano baja a 0.9, si no vuelve a 1 (con rebote)
     val escala by animateFloatAsState(
-        targetValue = if (presionado) 0.9f else 1f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy),
+        targetValue = 1f,
+        animationSpec = tween(durationMillis = 0),
         label = "escala"
     )
 
@@ -224,12 +211,12 @@ private fun BotonSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "4. Boton que se encoge",
+                text = "4. Boton",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Manten apretado el boton y mira como se achica.",
+                text = "Boton normal: al apretarlo no cambia de tamano.",
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -266,12 +253,12 @@ private fun ListaSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "5. Lista escalonada",
+                text = "5. Lista",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Las tarjetas entran una tras otra, como una playlist.",
+                text = "Toca el boton para mostrar la lista de canciones.",
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -285,12 +272,12 @@ private fun ListaSection() {
 
                 AnimatedVisibility(
                     visible = mostrar,
-                    enter = fadeIn(animationSpec = tween(durationMillis = 400, delayMillis = espera)) +
+                    enter = fadeIn(animationSpec = tween(durationMillis = 0, delayMillis = 0)) +
                         slideInVertically(
-                            animationSpec = tween(durationMillis = 400, delayMillis = espera),
+                            animationSpec = tween(durationMillis = 0, delayMillis = 0),
                             initialOffsetY = { alto -> alto / 2 }
                         ),
-                    exit = fadeOut(animationSpec = tween(durationMillis = 200))
+                    exit = fadeOut(animationSpec = tween(durationMillis = 0))
                 ) {
                     Card(
                         modifier = Modifier.fillMaxWidth(),
@@ -319,7 +306,7 @@ private fun TarjetaSection() {
         modifier = Modifier
             .fillMaxWidth()
             // animateContentSize anima el cambio de tamano cuando el contenido cambia
-            .animateContentSize()
+            
             .clickable { expandida = !expandida },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
@@ -328,7 +315,7 @@ private fun TarjetaSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "6. Tarjeta que se expande",
+                text = "6. Tarjeta",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -341,8 +328,8 @@ private fun TarjetaSection() {
             if (expandida) {
                 Text(
                     text = "Este es el texto completo. Cuando tocas la tarjeta, " +
-                        "su tamano cambia y Compose lo anima solo: la tarjeta " +
-                        "crece suavemente en vez de saltar de golpe. Es lo mismo " +
+                        "su tamano cambia: la tarjeta " +
+                        "cambia de golpe, sin movimiento. Es lo mismo " +
                         "que pasa en el ver mas de Facebook o Instagram.",
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -365,7 +352,7 @@ private fun ProgresoSection() {
     // Numero de 0 a 1 que Compose va moviendo solo durante 3 segundos
     val progreso by animateFloatAsState(
         targetValue = if (completa) 1f else 0f,
-        animationSpec = tween(durationMillis = 3000),
+        animationSpec = tween(durationMillis = 0),
         label = "progreso"
     )
 
@@ -379,12 +366,12 @@ private fun ProgresoSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "7. Progreso animado",
+                text = "7. Progreso",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "El circulo se llena y el numero sube, como una descarga.",
+                text = "El circulo se llena y el numero cambia, como una descarga.",
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -426,12 +413,12 @@ private fun SkeletonSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "8. Brillo de carga (skeleton)",
+                text = "8. Carga (skeleton)",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Mientras cargan los datos se ven rectangulos grises con una luz que pasa.",
+                text = "Mientras cargan los datos se ven rectangulos grises.",
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -463,7 +450,7 @@ private fun rememberBrillo(): Brush {
     val transicion = rememberInfiniteTransition(label = "brillo")
     val desplazamiento by transicion.animateFloat(
         initialValue = 0f,
-        targetValue = 1000f,
+        targetValue = 0f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 1500, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
@@ -633,14 +620,14 @@ private fun VectorSection() {
     // Compose mueve el tamano de 60.dp a 200.dp durante 1 segundo
     val tamano by animateDpAsState(
         targetValue = if (grande) 200.dp else 60.dp,
-        animationSpec = tween(durationMillis = 1000),
+        animationSpec = tween(durationMillis = 0),
         label = "tamano"
     )
 
     // Y a la vez gira de 0 a 360 grados
     val giro by animateFloatAsState(
         targetValue = if (grande) 360f else 0f,
-        animationSpec = tween(durationMillis = 1000),
+        animationSpec = tween(durationMillis = 0),
         label = "giro"
     )
 
@@ -651,12 +638,12 @@ private fun VectorSection() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "9. Vector animado (SVG)",
+                text = "9. Vector (SVG)",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "El corazon es una imagen vectorial: crece y gira, y se ve nitido todo el tiempo.",
+                text = "El corazon es una imagen vectorial: cambia de tamano y se ve nitido todo el tiempo.",
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -678,7 +665,7 @@ private fun VectorSection() {
 
             val letra by animateFloatAsState(
                 targetValue = if (grande) 36f else 16f,
-                animationSpec = tween(durationMillis = 1000),
+                animationSpec = tween(durationMillis = 0),
                 label = "letra"
             )
             Text(
