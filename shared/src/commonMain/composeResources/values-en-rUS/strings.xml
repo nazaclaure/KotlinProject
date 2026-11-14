@@ -121,4 +121,8 @@
     <string name="anim_9_text">Vector text</string>
     <string name="anim_9_grow">Enlarge</string>
     <string name="anim_9_shrink">Shrink</string>
+    <string name="anim_10_title">10. Shimmering logo (wifi)</string>
+    <string name="anim_10_text">A band of light sweeps from left to right over the logo, like the loading shimmer. It is a single infinite animation.</string>
+    <string name="anim_10_cd">Wifi logo with shimmer</string>
+
 </resources>

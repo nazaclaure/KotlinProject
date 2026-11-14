@@ -121,4 +121,8 @@
     <string name="anim_9_text">Texto vectorial</string>
     <string name="anim_9_grow">Agrandar</string>
     <string name="anim_9_shrink">Achicar</string>
+    <string name="anim_10_title">10. Logo con brillo (wifi)</string>
+    <string name="anim_10_text">Una franja de luz pasa de izquierda a derecha sobre el logo, igual que el brillo de carga. Es una sola animaci&#243;n infinita.</string>
+    <string name="anim_10_cd">Logo de wifi con brillo</string>
+
 </resources>

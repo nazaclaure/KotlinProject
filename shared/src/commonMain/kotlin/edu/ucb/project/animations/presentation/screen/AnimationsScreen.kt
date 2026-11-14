@@ -131,6 +131,9 @@ fun AnimationsScreen(navController: NavHostController) {
 
         // Animacion 9: vector animado
         VectorSection()
+
+        // Animacion 10: logo con brillo (wifi)
+        WifiSection()
         }
     )
 }
