@@ -80,6 +80,12 @@ import kotlinproject.shared.generated.resources.corazon
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 
 @Composable
 fun AnimationsScreen(navController: NavHostController) {
@@ -143,6 +149,9 @@ fun AnimationsScreen(navController: NavHostController) {
 
         // Animacion 9: vector animado
         VectorSection()
+
+        // Animacion 10: logo wifi (sin brillo)
+        WifiSection()
         }
     )
 }
@@ -712,6 +721,70 @@ private fun InfoSection(titulo: String, descripcion: String, donde: String) {
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary
             )
+        }
+    }
+}
+
+@Composable
+private fun WifiSection() {
+    // Version sin animacion: el logo se dibuja quieto, sin brillo
+    val colorLogo = MaterialTheme.colorScheme.primary
+    val descripcion = stringResource(Res.string.anim_10_cd)
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(
+                text = stringResource(Res.string.anim_10_title),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = stringResource(Res.string.anim_10_text),
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Box(
+                modifier = Modifier.fillMaxWidth().height(150.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Canvas(
+                    modifier = Modifier
+                        .size(140.dp)
+                        .semantics { contentDescription = descripcion }
+                ) {
+                    val centro = Offset(size.width / 2, size.height * 0.85f)
+                    val grosor = size.width * 0.07f
+
+                    drawCircle(
+                        color = colorLogo,
+                        radius = size.width * 0.06f,
+                        center = centro
+                    )
+
+                    val radios = listOf(0.22f, 0.38f, 0.54f)
+                    for (i in 0..2) {
+                        val r = size.width * radios[i]
+                        drawArc(
+                            color = colorLogo,
+                            startAngle = -135f,
+                            sweepAngle = 90f,
+                            useCenter = false,
+                            topLeft = Offset(centro.x - r, centro.y - r),
+                            size = Size(r * 2, r * 2),
+                            style = Stroke(width = grosor, cap = StrokeCap.Round)
+                        )
+                    }
+                }
+            }
         }
     }
 }

@@ -122,4 +122,8 @@
     <string name="anim_9_grow">Enlarge</string>
     <string name="anim_9_shrink">Shrink</string>
     <string name="anim_off_banner">Version WITHOUT animations: everything changes at once, with no movement.</string>
+    <string name="anim_10_title">10. Shimmering logo (wifi)</string>
+    <string name="anim_10_text">The logo stays still: with no animation, the band of light does not move.</string>
+    <string name="anim_10_cd">Wifi logo</string>
+
 </resources>

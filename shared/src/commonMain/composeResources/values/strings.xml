@@ -122,4 +122,8 @@
     <string name="anim_9_grow">Agrandar</string>
     <string name="anim_9_shrink">Achicar</string>
     <string name="anim_off_banner">Versi&#243;n SIN animaciones: todo cambia de golpe, sin movimiento.</string>
+    <string name="anim_10_title">10. Logo con brillo (wifi)</string>
+    <string name="anim_10_text">El logo se ve quieto: sin animaci&#243;n, la franja de luz no pasa.</string>
+    <string name="anim_10_cd">Logo de wifi</string>
+
 </resources>
